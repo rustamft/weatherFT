@@ -1,11 +1,10 @@
-package com.rustamft.weatherft.database
+package com.rustamft.weatherft.database.repo
 
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
-import kotlinx.coroutines.flow.Flow
 
-interface Repo {
+interface AppRepo {
 
-    suspend fun updateCurrentWeather(weather: Flow<CurrentWeather>)
+    suspend fun getCurrentWeather(): CurrentWeather
     suspend fun getWeatherForecast(): WeatherForecast
 }

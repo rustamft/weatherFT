@@ -1,4 +1,4 @@
-package com.rustamft.weatherft.database
+package com.rustamft.weatherft.database.repo
 
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast

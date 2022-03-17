@@ -11,7 +11,38 @@ data class CurrentWeather(
     val lon: Double,
     val timezone: String,
     val timezone_offset: Int
-) : Parcelable
+) : Parcelable {
+
+    constructor() : this(
+        Current(
+            0,
+            0.0,
+            0,
+            0.0,
+            0,
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            0,
+            listOf(
+                Weather(
+                    "",
+                    "",
+                    0,
+                    ""
+                )
+            ),
+            0,
+            0
+        ),
+        0.0,
+        0.0,
+        "",
+        0
+    )
+}
 
 data class Current(
     val clouds: Int,
