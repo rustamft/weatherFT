@@ -1,34 +1,39 @@
-package com.rustamft.weatherft.ui.screens
+package com.rustamft.weatherft.ui.screens.weather
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
 
-@Destination
+@Destination(start = true)
 @Composable
 fun WeatherScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: WeatherViewModel = viewModel()
 ) {
 
-    val weather = viewModel.currentWeather
-    var timezone by remember {
-        mutableStateOf("")
+    if (viewModel.currentWeather.timezone == "") {
+        navigator.navigate(LoginScreenDestination)
+    } else {
+        viewModel.updateCurrentWeather()
     }
 
-    LaunchedEffect(weather) {
-        weather.collect {
-            timezone = it.timezone
-        }
-    }
-    viewModel.updateCurrentWeather()
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = timezone)
+        Text(text = viewModel.currentWeather.timezone)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WeatherPreview() {
+    //WeatherScreen()
 }

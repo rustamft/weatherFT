@@ -3,33 +3,25 @@ package com.rustamft.weatherft.database.repo
 import android.util.Log
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
-import com.rustamft.weatherft.database.repo.AppRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import javax.inject.Inject
 
 private const val TAG = "OpenWeatherRepo"
 
-class OpenWeatherRepo : AppRepo {
+class OpenWeatherRepo @Inject constructor(
+    private val api: OpenWeatherApi
+) : Repo {
 
-    private val api: OpenWeatherApi by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(OpenWeatherApi::class.java)
-    }
-
-    override suspend fun getCurrentWeather(): CurrentWeather {
+    override suspend fun getCurrentWeather(lat: String, lon: String): CurrentWeather {
         val response: Response<CurrentWeather> = withContext(Dispatchers.IO) {
             try {
                 api.getCurrentWeather(
-                    "56.84",
-                    "60.64",
+                    lat,
+                    lon,
                     "minutely,hourly,daily,alerts",
                     "2eec8f5a4f744e3045b451249d7286f5"
                 )

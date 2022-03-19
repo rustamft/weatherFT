@@ -1,4 +1,4 @@
-package com.rustamft.weatherft.ui.screens
+package com.rustamft.weatherft.ui.screens.forecast
 
 import androidx.compose.runtime.Composable
 import com.ramcosta.composedestinations.annotation.Destination
