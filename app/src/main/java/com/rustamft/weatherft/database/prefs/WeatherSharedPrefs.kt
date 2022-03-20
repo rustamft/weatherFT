@@ -1,7 +1,7 @@
 package com.rustamft.weatherft.database.prefs
 
 import android.content.Context
-import com.rustamft.weatherft.database.entity.CurrentWeather
+import com.rustamft.weatherft.util.API_KEY
 import com.rustamft.weatherft.util.CURRENT_WEATHER
 import com.rustamft.weatherft.util.LATITUDE
 import com.rustamft.weatherft.util.LONGITUDE
@@ -15,6 +15,17 @@ class WeatherSharedPrefs @Inject constructor(
 
     private val prefs =
         context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+
+    override fun setApiKey(key: String) {
+        prefs
+            .edit()
+            .putString(API_KEY, key)
+            .apply()
+    }
+
+    override fun getApiKey(): String {
+        return prefs.getString(API_KEY, "") ?: ""
+    }
 
     override fun setCoordinates(lat: String, lon: String) {
         prefs

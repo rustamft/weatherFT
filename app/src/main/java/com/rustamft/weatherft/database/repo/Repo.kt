@@ -1,5 +1,6 @@
 package com.rustamft.weatherft.database.repo
 
+import com.rustamft.weatherft.database.entity.CitiesList
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
 import dagger.Binds
@@ -18,7 +19,13 @@ interface Repo {
         abstract fun bindRepo(sharedPrefs: OpenWeatherRepo): Repo
     }
 
-    suspend fun getCurrentWeather(lat: String, lon: String): CurrentWeather
+    suspend fun getCitiesList(city: String, apiKey: String): CitiesList
+
+    suspend fun getCurrentWeather(
+        lat: String,
+        lon: String,
+        apiKey: String
+    ): CurrentWeather
 
     suspend fun getWeatherForecast(): WeatherForecast
 }

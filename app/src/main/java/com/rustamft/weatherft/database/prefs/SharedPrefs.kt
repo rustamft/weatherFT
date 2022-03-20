@@ -16,6 +16,8 @@ interface SharedPrefs {
         abstract fun bindSharedPrefs(sharedPrefs: WeatherSharedPrefs): SharedPrefs
     }
 
+    fun setApiKey(key: String)
+    fun getApiKey(): String
     fun setCoordinates(lat: String, lon: String)
     fun getCoordinates(): Pair<String, String>
     fun getCurrentWeather(): String

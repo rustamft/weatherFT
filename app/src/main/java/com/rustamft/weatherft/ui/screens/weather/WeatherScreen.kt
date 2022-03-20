@@ -6,7 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
@@ -15,7 +15,7 @@ import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
 @Composable
 fun WeatherScreen(
     navigator: DestinationsNavigator,
-    viewModel: WeatherViewModel = viewModel()
+    viewModel: WeatherViewModel = hiltViewModel()
 ) {
 
     if (viewModel.currentWeather.timezone == "") {

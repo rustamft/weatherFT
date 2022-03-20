@@ -1,5 +1,6 @@
 package com.rustamft.weatherft.database.repo
 
+import com.rustamft.weatherft.database.entity.CitiesList
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
 import dagger.Module
@@ -28,7 +29,13 @@ interface OpenWeatherApi {
         }
     }
 
-    /// data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily&appid=2eec8f5a4f744e3045b451249d7286f5
+    @GET("geo/1.0/direct")
+    suspend fun getCitiesList(
+        @Query("q") city: String,
+        @Query("appid") apiKey: String
+    ) : Response<CitiesList>
+
+    // data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily&appid=2eec8f5a4f744e3045b451249d7286f5
     @GET("/data/2.5/onecall")
     suspend fun getCurrentWeather(
         @Query("lat") lat: String,

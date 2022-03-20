@@ -26,7 +26,7 @@ class WeatherViewModel @Inject constructor(
             val coordinates = prefs.getCoordinates()
             val lat = coordinates.first
             val lon = coordinates.second
-            _currentWeather = repo.getCurrentWeather(lat, lon)
+            _currentWeather = repo.getCurrentWeather(lat, lon, prefs.getApiKey())
         }
     }
 
