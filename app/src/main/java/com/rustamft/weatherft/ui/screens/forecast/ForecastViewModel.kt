@@ -10,5 +10,4 @@ import javax.inject.Inject
 class ForecastViewModel @Inject constructor(
     private val prefs: SharedPrefs,
     private val repo: Repo
-) : ViewModel() {
-}
+) : ViewModel()

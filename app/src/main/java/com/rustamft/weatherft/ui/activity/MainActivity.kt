@@ -36,13 +36,5 @@ class MainActivity : ComponentActivity() {
 
 fun Context.hasInternetPermission(): Boolean {
     return ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) ==
-            PackageManager.PERMISSION_GRANTED
+        PackageManager.PERMISSION_GRANTED
 }
-
-/*
-fun Context.getActivity(): ComponentActivity? = when (this) {
-    is ComponentActivity -> this
-    is ContextWrapper -> baseContext.getActivity()
-    else -> null
-}
- */

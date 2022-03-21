@@ -33,7 +33,7 @@ interface OpenWeatherApi {
     suspend fun getCitiesList(
         @Query("q") city: String,
         @Query("appid") apiKey: String
-    ) : Response<CitiesList>
+    ): Response<CitiesList>
 
     // data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily&appid=2eec8f5a4f744e3045b451249d7286f5
     @GET("/data/2.5/onecall")

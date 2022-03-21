@@ -46,10 +46,11 @@ fun LoginScreen(
 
         LazyColumn {
             itemsIndexed(viewModel.listOfCities) { index: Int, item: City ->
-                Button(onClick = {
-                    viewModel.setCity(item)
-                    navigator.navigate(WeatherScreenDestination)
-                }
+                Button(
+                    onClick = {
+                        viewModel.setCity(item)
+                        navigator.navigate(WeatherScreenDestination)
+                    }
                 ) {
                     Text(text = item.name)
                 }
@@ -83,9 +84,9 @@ private fun CityElementsSet(viewModel: LoginViewModel) {
         }) {
             Text(text = "Change API key")
         }
-        
+
         Spacer(modifier = Modifier.width(9.dp))
-        
+
         Button(onClick = {
             viewModel.updateCitiesList(text)
         }) {
