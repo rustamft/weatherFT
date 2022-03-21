@@ -19,11 +19,11 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     var listOfCities by mutableStateOf(listOf<City>())
+    var isApiKeyEntered by mutableStateOf(prefs.getApiKey() != "")
 
-    fun getCitiesList(city: String) {
-        viewModelScope.launch {
-            listOfCities = repo.getCitiesList(city, prefs.getApiKey())
-        }
+    fun setApiKey(key: String) {
+        prefs.setApiKey(key)
+        isApiKeyEntered = key != ""
     }
 
     fun setCity(city: City) {
@@ -31,5 +31,11 @@ class LoginViewModel @Inject constructor(
             city.lat.toString(),
             city.lon.toString()
         )
+    }
+
+    fun updateCitiesList(city: String) {
+        viewModelScope.launch {
+            listOfCities = repo.getCitiesList(city, prefs.getApiKey())
+        }
     }
 }
