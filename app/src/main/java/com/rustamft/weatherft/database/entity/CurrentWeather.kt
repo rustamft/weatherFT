@@ -1,17 +1,14 @@
 package com.rustamft.weatherft.database.entity
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-@Parcelize
 data class CurrentWeather(
     val current: @RawValue Current,
     val lat: Double,
     val lon: Double,
     val timezone: String,
     val timezone_offset: Int
-) : Parcelable {
+) {
 
     constructor() : this(
         Current(

@@ -1,8 +1,5 @@
 package com.rustamft.weatherft.ui.activity
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.rustamft.weatherft.ui.screens.NavGraphs
 import com.rustamft.weatherft.ui.theme.WeatherFTTheme
@@ -32,9 +28,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-fun Context.hasInternetPermission(): Boolean {
-    return ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) ==
-        PackageManager.PERMISSION_GRANTED
 }

@@ -26,12 +26,7 @@ class LoginViewModel @Inject constructor(
         isApiKeyEntered = key != ""
     }
 
-    fun setCity(city: City) {
-        prefs.setCoordinates(
-            city.lat.toString(),
-            city.lon.toString()
-        )
-    }
+    fun setCity(city: City) = prefs.setCity(city)
 
     fun updateCitiesList(city: String) {
         viewModelScope.launch {

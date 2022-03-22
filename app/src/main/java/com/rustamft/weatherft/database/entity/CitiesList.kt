@@ -1,5 +1,8 @@
 package com.rustamft.weatherft.database.entity
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 class CitiesList : ArrayList<City>()
 
 data class City(
@@ -9,7 +12,13 @@ data class City(
     val lon: Double,
     val name: String,
     val state: String
-)
+) {
+
+    fun getLocalName(language: String): String {
+        val map = local_names.serializeToMap()
+        return map.getValue(language)
+    }
+}
 
 data class LocalNames(
     val ar: String,
@@ -46,3 +55,13 @@ data class LocalNames(
     val uk: String,
     val zh: String
 )
+
+fun <T> T.serializeToMap(): Map<String, String> {
+    return convert()
+}
+
+inline fun <I, reified O> I.convert(): O {
+    val gson = Gson()
+    val json = gson.toJson(this)
+    return gson.fromJson(json, object : TypeToken<O>() {}.type)
+}

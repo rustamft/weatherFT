@@ -22,8 +22,8 @@ interface Repo {
     suspend fun getCitiesList(city: String, apiKey: String): CitiesList
 
     suspend fun getCurrentWeather(
-        lat: String,
-        lon: String,
+        lat: Double,
+        lon: Double,
         apiKey: String
     ): CurrentWeather
 

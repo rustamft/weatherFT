@@ -29,17 +29,19 @@ interface OpenWeatherApi {
         }
     }
 
-    @GET("geo/1.0/direct")
+    // https://api.openweathermap.org/geo/1.0/direct?q=Kamensk&appid=2eec8f5a4f744e3045b451249d7286f5
+    @GET("/geo/1.0/direct")
     suspend fun getCitiesList(
         @Query("q") city: String,
+        @Query("limit") limit: Int,
         @Query("appid") apiKey: String
     ): Response<CitiesList>
 
     // data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily&appid=2eec8f5a4f744e3045b451249d7286f5
     @GET("/data/2.5/onecall")
     suspend fun getCurrentWeather(
-        @Query("lat") lat: String,
-        @Query("lon") lon: String,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
         @Query("exclude") exclude: String,
         @Query("appid") apiKey: String
     ): Response<CurrentWeather>

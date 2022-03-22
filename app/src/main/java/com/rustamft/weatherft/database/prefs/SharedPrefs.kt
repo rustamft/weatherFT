@@ -1,5 +1,7 @@
 package com.rustamft.weatherft.database.prefs
 
+import com.rustamft.weatherft.database.entity.City
+import com.rustamft.weatherft.database.entity.CurrentWeather
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,7 +20,7 @@ interface SharedPrefs {
 
     fun setApiKey(key: String)
     fun getApiKey(): String
-    fun setCoordinates(lat: String, lon: String)
-    fun getCoordinates(): Pair<String, String>
-    fun getCurrentWeather(): String
+    fun setCity(city: City)
+    fun getCity(): City?
+    fun getCurrentWeather(): CurrentWeather
 }

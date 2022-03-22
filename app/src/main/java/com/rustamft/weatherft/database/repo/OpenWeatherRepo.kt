@@ -19,13 +19,13 @@ class OpenWeatherRepo @Inject constructor(
 
     override suspend fun getCitiesList(city: String, apiKey: String): CitiesList {
         return makeApiCall {
-            api.getCitiesList(city, apiKey)
+            api.getCitiesList(city, 5, apiKey)
         }
     }
 
     override suspend fun getCurrentWeather(
-        lat: String,
-        lon: String,
+        lat: Double,
+        lon: Double,
         apiKey: String
     ): CurrentWeather {
         return makeApiCall {
