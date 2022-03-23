@@ -20,7 +20,10 @@ interface SharedPrefs {
 
     fun setApiKey(key: String)
     fun getApiKey(): String
+    fun clearApiKey()
     fun setCity(city: City)
     fun getCity(): City?
+    fun clearCity()
+    fun setCurrentWeather(currentWeather: CurrentWeather)
     fun getCurrentWeather(): CurrentWeather
 }

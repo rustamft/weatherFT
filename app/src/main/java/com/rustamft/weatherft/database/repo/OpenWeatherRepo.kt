@@ -32,7 +32,8 @@ class OpenWeatherRepo @Inject constructor(
             api.getCurrentWeather(
                 lat,
                 lon,
-                "minutely,hourly,daily,alerts",
+                EXCLUDE_ALL,
+                METRIC,
                 apiKey
             )
         }

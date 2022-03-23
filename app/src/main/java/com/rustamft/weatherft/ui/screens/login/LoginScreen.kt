@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -43,7 +43,7 @@ fun LoginScreen(
         } else {
             ApiElementsSet(viewModel)
         }
-
+        Spacer(modifier = Modifier.width(9.dp))
         LazyColumn {
             itemsIndexed(viewModel.listOfCities) { index: Int, item: City ->
                 Button(
@@ -66,32 +66,31 @@ private fun CityElementsSet(viewModel: LoginViewModel) {
         mutableStateOf("")
     }
 
-    TextField(
-        value = text,
-        onValueChange = {
-            text = it
-        },
-        label = {
-            Text("City")
-        }
-    )
-
-    Spacer(modifier = Modifier.height(9.dp))
-
-    Row {
-        Button(onClick = {
-            viewModel.setApiKey("")
-        }) {
-            Text(text = "Change API key")
-        }
-
-        Spacer(modifier = Modifier.width(9.dp))
-
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        TextField(
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            label = {
+                Text("City")
+            }
+        )
         Button(onClick = {
             viewModel.updateCitiesList(text)
         }) {
             Text(text = "Find")
         }
+    }
+    Spacer(modifier = Modifier.width(9.dp))
+    Button(onClick = {
+        viewModel.clearApiKey()
+    }) {
+        Text(text = "Change API key")
     }
 }
 
@@ -102,21 +101,24 @@ private fun ApiElementsSet(viewModel: LoginViewModel) {
         mutableStateOf("")
     }
 
-    TextField(
-        value = text,
-        onValueChange = {
-            text = it
-        },
-        label = {
-            Text("Open Weather API key")
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        TextField(
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            label = {
+                Text("Open Weather API key")
+            }
+        )
+        Button(onClick = {
+            viewModel.setApiKey(text)
+        }) {
+            Text(text = "Save")
         }
-    )
-
-    Spacer(modifier = Modifier.height(9.dp))
-
-    Button(onClick = {
-        viewModel.setApiKey(text)
-    }) {
-        Text(text = "Save")
     }
 }

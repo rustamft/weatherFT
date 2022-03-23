@@ -21,6 +21,7 @@ class WeatherSharedPrefs @Inject constructor(
 
     private val prefs =
         context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+    private val gson = Gson()
 
     override fun setApiKey(key: String) {
         prefs
@@ -33,8 +34,15 @@ class WeatherSharedPrefs @Inject constructor(
         return prefs.getString(API_KEY, "") ?: ""
     }
 
+    override fun clearApiKey() {
+        prefs
+            .edit()
+            .remove(API_KEY)
+            .apply()
+    }
+
     override fun setCity(city: City) {
-        val json = Gson().toJson(city)
+        val json = gson.toJson(city)
         prefs
             .edit()
             .putString(CITY, json)
@@ -44,11 +52,26 @@ class WeatherSharedPrefs @Inject constructor(
     override fun getCity(): City? {
         val json = prefs.getString(CITY, "") ?: ""
         return try {
-            Gson().fromJson(json, City::class.java)
+            gson.fromJson(json, City::class.java)
         } catch (e: JsonSyntaxException) {
             Log.d(TAG, "JSON syntax is not valid. City could not be restored from prefs.")
             null
         }
+    }
+
+    override fun clearCity() {
+        prefs
+            .edit()
+            .remove(CITY)
+            .apply()
+    }
+
+    override fun setCurrentWeather(currentWeather: CurrentWeather) {
+        val json = gson.toJson(currentWeather)
+        prefs
+            .edit()
+            .putString(CURRENT_WEATHER, json)
+            .apply()
     }
 
     override fun getCurrentWeather(): CurrentWeather {

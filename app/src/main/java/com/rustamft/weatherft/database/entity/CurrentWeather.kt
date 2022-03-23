@@ -21,7 +21,7 @@ data class CurrentWeather(
             0,
             0,
             0.0,
-            0,
+            0.0,
             0,
             listOf(
                 Weather(
@@ -32,7 +32,7 @@ data class CurrentWeather(
                 )
             ),
             0,
-            0
+            0.0
         ),
         0.0,
         0.0,
@@ -51,11 +51,11 @@ data class Current(
     val sunrise: Int,
     val sunset: Int,
     val temp: Double,
-    val uvi: Int,
+    val uvi: Double,
     val visibility: Int,
     val weather: List<Weather>,
     val wind_deg: Int,
-    val wind_speed: Int
+    val wind_speed: Double
 )
 
 data class Weather(

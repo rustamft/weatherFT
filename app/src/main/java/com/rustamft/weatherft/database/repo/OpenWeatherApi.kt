@@ -13,6 +13,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+const val EXCLUDE_ALL = "minutely,hourly,daily,alerts"
+const val METRIC = "metric"
+
 interface OpenWeatherApi {
 
     @Module
@@ -29,7 +32,7 @@ interface OpenWeatherApi {
         }
     }
 
-    // https://api.openweathermap.org/geo/1.0/direct?q=Kamensk&appid=2eec8f5a4f744e3045b451249d7286f5
+    // https://api.openweathermap.org/geo/1.0/direct?q=Kamensk&appid=
     @GET("/geo/1.0/direct")
     suspend fun getCitiesList(
         @Query("q") city: String,
@@ -37,12 +40,13 @@ interface OpenWeatherApi {
         @Query("appid") apiKey: String
     ): Response<CitiesList>
 
-    // data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily&appid=2eec8f5a4f744e3045b451249d7286f5
+    // https://api.openweathermap.org/data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily,alerts&appid=
     @GET("/data/2.5/onecall")
     suspend fun getCurrentWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("exclude") exclude: String,
+        @Query("units") units: String,
         @Query("appid") apiKey: String
     ): Response<CurrentWeather>
 

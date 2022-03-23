@@ -26,6 +26,11 @@ class LoginViewModel @Inject constructor(
         isApiKeyEntered = key != ""
     }
 
+    fun clearApiKey() {
+        prefs.clearApiKey()
+        isApiKeyEntered = false
+    }
+
     fun setCity(city: City) = prefs.setCity(city)
 
     fun updateCitiesList(city: String) {

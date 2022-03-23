@@ -2,6 +2,7 @@ package com.rustamft.weatherft.ui.screens.weather
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rustamft.weatherft.database.prefs.SharedPrefs
@@ -18,18 +19,19 @@ class WeatherViewModel @Inject constructor(
 
     val city = prefs.getCity()
 
-    private var _currentWeather = prefs.getCurrentWeather()
-    val currentWeather by mutableStateOf(_currentWeather)
+    var currentWeather by mutableStateOf(prefs.getCurrentWeather())
+
+    fun clearCity() = prefs.clearCity()
 
     fun updateCurrentWeather() {
         viewModelScope.launch {
-            val city = prefs.getCity()
             if (city != null) {
-                _currentWeather = repo.getCurrentWeather(
+                currentWeather = repo.getCurrentWeather(
                     city.lat,
                     city.lon,
                     prefs.getApiKey()
                 )
+                prefs.setCurrentWeather(currentWeather)
             }
         }
     }
