@@ -9,6 +9,7 @@ import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.util.API_KEY
 import com.rustamft.weatherft.util.CITY
 import com.rustamft.weatherft.util.CURRENT_WEATHER
+import com.rustamft.weatherft.util.LAST_TIME_UPDATED
 import com.rustamft.weatherft.util.SHARED_PREFS
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -83,5 +84,14 @@ class WeatherSharedPrefs @Inject constructor(
         }
     }
 
-    // https://stackoverflow.com/questions/7145606/how-do-you-save-store-objects-in-sharedpreferences-on-android
+    override fun setLastTimeUpdated(millis: Long) {
+        prefs
+            .edit()
+            .putLong(LAST_TIME_UPDATED, millis)
+            .apply()
+    }
+
+    override fun getLastTimeUpdated(): Long {
+        return prefs.getLong(LAST_TIME_UPDATED, 0L)
+    }
 }

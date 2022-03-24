@@ -26,4 +26,6 @@ interface SharedPrefs {
     fun clearCity()
     fun setCurrentWeather(currentWeather: CurrentWeather)
     fun getCurrentWeather(): CurrentWeather
+    fun setLastTimeUpdated(millis: Long)
+    fun getLastTimeUpdated(): Long
 }
