@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,11 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.rustamft.weatherft.R
 import com.rustamft.weatherft.database.entity.City
+import com.rustamft.weatherft.ui.activity.IconButtonElement
+import com.rustamft.weatherft.ui.activity.TextFieldElement
 import com.rustamft.weatherft.ui.screens.destinations.WeatherScreenDestination
 
 @Destination
@@ -62,63 +69,54 @@ fun LoginScreen(
 @Composable
 private fun CityElementsSet(viewModel: LoginViewModel) {
 
-    var text by remember {
-        mutableStateOf("")
-    }
+    var text by remember { mutableStateOf("") }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        TextField(
-            value = text,
-            onValueChange = {
-                text = it
-            },
-            label = {
-                Text("City")
-            }
+        TextFieldElement(
+            text = text,
+            onValueChange = { text = it },
+            label = stringResource(R.string.city)
         )
-        Button(onClick = {
-            viewModel.updateCitiesList(text)
-        }) {
-            Text(text = "Find")
-        }
+        IconButtonElement(
+            onClick = { viewModel.updateCitiesList(text) },
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = stringResource(R.string.find_city)
+        )
     }
-    Spacer(modifier = Modifier.width(9.dp))
-    Button(onClick = {
-        viewModel.clearApiKey()
-    }) {
-        Text(text = "Change API key")
+    Spacer(modifier = Modifier.height(9.dp))
+    TextButton(
+        onClick = {
+            viewModel.clearApiKey()
+        },
+        shape = CircleShape
+    ) {
+        Text(text = stringResource(R.string.change_api_key))
     }
 }
 
 @Composable
 private fun ApiElementsSet(viewModel: LoginViewModel) {
 
-    var text by remember {
-        mutableStateOf("")
-    }
+    var text by remember { mutableStateOf("") }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        TextField(
-            value = text,
-            onValueChange = {
-                text = it
-            },
-            label = {
-                Text("Open Weather API key")
-            }
+        TextFieldElement(
+            text = text,
+            onValueChange = { text = it },
+            label = stringResource(R.string.open_weather_api_key)
         )
-        Button(onClick = {
-            viewModel.setApiKey(text)
-        }) {
-            Text(text = "Save")
-        }
+        IconButtonElement(
+            onClick = { viewModel.setApiKey(text) },
+            painter = painterResource(id = R.drawable.ic_save),
+            contentDescription = stringResource(R.string.save_api_key)
+        )
     }
 }

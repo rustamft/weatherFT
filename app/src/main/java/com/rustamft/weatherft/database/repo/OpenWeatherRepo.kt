@@ -1,7 +1,7 @@
 package com.rustamft.weatherft.database.repo
 
 import android.util.Log
-import com.rustamft.weatherft.database.entity.CitiesList
+import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
 import com.rustamft.weatherft.util.EXCLUDE_ALL
@@ -20,9 +20,13 @@ class OpenWeatherRepo @Inject constructor(
     private val api: OpenWeatherApi
 ) : Repo {
 
-    override suspend fun getCitiesList(city: String, apiKey: String): CitiesList {
-        return makeApiCall {
-            api.getCitiesList(city, 5, apiKey)
+    override suspend fun getCitiesList(city: String, apiKey: String): ArrayList<City> {
+        return if (city == "" || apiKey == "") {
+            ArrayList()
+        } else {
+            makeApiCall {
+                api.getCitiesList(city, 5, apiKey)
+            }
         }
     }
 

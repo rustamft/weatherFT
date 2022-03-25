@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">weatherFT</string>
+    <string name="degrees_centigrade">°C</string>
+    <string name="feels_like">Feels like\ </string>
+    <string name="updated_at">Updated:\ </string>
+    <string name="change_city_settings">Change the city and other settings</string>
+    <string name="find_city">Find the city</string>
+    <string name="change_api_key">Change API key</string>
+    <string name="city">City</string>
+    <string name="open_weather_api_key">Open Weather API key</string>
+    <string name="save_api_key">Save API key</string>
 </resources>
