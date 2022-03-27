@@ -29,26 +29,83 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.database.entity.City
-import com.rustamft.weatherft.ui.activity.IconButtonElement
-import com.rustamft.weatherft.ui.activity.TextFieldElement
+import com.rustamft.weatherft.ui.IconButtonElement
+import com.rustamft.weatherft.ui.TextFieldElement
 import com.rustamft.weatherft.ui.screens.destinations.WeatherScreenDestination
 
 @Destination
 @Composable
 fun LoginScreen(
     navigator: DestinationsNavigator,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+
+    //val weatherPrefs = viewModel.prefsFlow.collectAsState(initial = WeatherPrefs()).value
+
+    @Composable
+    fun ApiElementsSet() {
+
+        var text by remember { mutableStateOf("") }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            TextFieldElement(
+                text = text,
+                onValueChange = { text = it },
+                label = stringResource(R.string.open_weather_api_key)
+            )
+            IconButtonElement(
+                onClick = { viewModel.setApiKey(text) },
+                painter = painterResource(id = R.drawable.ic_save),
+                contentDescription = stringResource(R.string.save_api_key)
+            )
+        }
+    }
+
+    @Composable
+    fun CityElementsSet() {
+
+        var text by remember { mutableStateOf("") }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            TextFieldElement(
+                text = text,
+                onValueChange = { text = it },
+                label = stringResource(R.string.city)
+            )
+            IconButtonElement(
+                onClick = { viewModel.updateCitiesList(text) }, // TODO: crash
+                painter = painterResource(id = R.drawable.ic_search),
+                contentDescription = stringResource(R.string.find_city)
+            )
+        }
+        Spacer(modifier = Modifier.height(9.dp))
+        TextButton(
+            onClick = {
+                viewModel.clearApiKey()
+            },
+            shape = CircleShape
+        ) {
+            Text(text = stringResource(R.string.change_api_key))
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        if (viewModel.isApiKeyEntered) {
-            CityElementsSet(viewModel)
+        if (viewModel.apiKeyIsNotSet) {
+            ApiElementsSet()
         } else {
-            ApiElementsSet(viewModel)
+            CityElementsSet()
         }
         Spacer(modifier = Modifier.width(9.dp))
         LazyColumn {
@@ -59,64 +116,9 @@ fun LoginScreen(
                         navigator.navigate(WeatherScreenDestination)
                     }
                 ) {
-                    Text(text = item.name)
+                    Text(text = "$item.name $item.state $item.country")
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun CityElementsSet(viewModel: LoginViewModel) {
-
-    var text by remember { mutableStateOf("") }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        TextFieldElement(
-            text = text,
-            onValueChange = { text = it },
-            label = stringResource(R.string.city)
-        )
-        IconButtonElement(
-            onClick = { viewModel.updateCitiesList(text) },
-            painter = painterResource(id = R.drawable.ic_search),
-            contentDescription = stringResource(R.string.find_city)
-        )
-    }
-    Spacer(modifier = Modifier.height(9.dp))
-    TextButton(
-        onClick = {
-            viewModel.clearApiKey()
-        },
-        shape = CircleShape
-    ) {
-        Text(text = stringResource(R.string.change_api_key))
-    }
-}
-
-@Composable
-private fun ApiElementsSet(viewModel: LoginViewModel) {
-
-    var text by remember { mutableStateOf("") }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        TextFieldElement(
-            text = text,
-            onValueChange = { text = it },
-            label = stringResource(R.string.open_weather_api_key)
-        )
-        IconButtonElement(
-            onClick = { viewModel.setApiKey(text) },
-            painter = painterResource(id = R.drawable.ic_save),
-            contentDescription = stringResource(R.string.save_api_key)
-        )
     }
 }

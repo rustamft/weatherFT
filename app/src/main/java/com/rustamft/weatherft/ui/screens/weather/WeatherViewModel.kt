@@ -3,60 +3,50 @@ package com.rustamft.weatherft.ui.screens.weather
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rustamft.weatherft.database.prefs.SharedPrefs
-import com.rustamft.weatherft.database.repo.Repo
-import com.rustamft.weatherft.util.DATE_TIME_PATTERN
+import com.rustamft.weatherft.database.datastore.WeatherPrefs
+import com.rustamft.weatherft.database.datastore.setWeatherPrefs
+import com.rustamft.weatherft.database.repo.WeatherRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val prefs: SharedPrefs,
-    private val repo: Repo
+    private val dataStore: DataStore<WeatherPrefs>,
+    private val repo: WeatherRepo
 ) : ViewModel() {
 
-    val city = prefs.getCity()
-
-    private var lastTimeUpdatedMillis = prefs.getLastTimeUpdated()
-    var lastTimeUpdatedString by mutableStateOf(millisToString(lastTimeUpdatedMillis))
-
-    var currentWeather by mutableStateOf(prefs.getCurrentWeather())
-
-    fun clearCity() = prefs.clearCity()
+    val prefsFlow = dataStore.data
+    var apiKeyIsNotSet by mutableStateOf(false)
 
     fun updateData() {
-        val now = Calendar.getInstance().timeInMillis
-        val fifteenMinutes = 15L * 60L * 1000L
-        if (
-            city != null &&
-            now - lastTimeUpdatedMillis > fifteenMinutes
-        ) {
-            viewModelScope.launch {
-                currentWeather = repo.getCurrentWeather(
-                    city.lat,
-                    city.lon,
-                    prefs.getApiKey()
-                )
-                prefs.setCurrentWeather(currentWeather)
-                prefs.setLastTimeUpdated(now)
-                lastTimeUpdatedMillis = now
-                lastTimeUpdatedString = millisToString(lastTimeUpdatedMillis)
+        viewModelScope.launch {
+            val weatherPrefs = prefsFlow.first()
+            if (weatherPrefs.apiKey == "") {
+                apiKeyIsNotSet = true
+            } else {
+                with(weatherPrefs) {
+                    val now = Calendar.getInstance().timeInMillis
+                    val fifteenMinutes = 15L * 60L * 1000L
+                    if (now - lastTimeUpdatedMillis > fifteenMinutes) {
+                        val updatedCurrentWeather = repo.getCurrentWeather(
+                            city.lat,
+                            city.lon,
+                            apiKey
+                        )
+                        val updatedWeatherPrefs = copy(
+                            currentWeather = updatedCurrentWeather,
+                            lastTimeUpdatedMillis = now
+                        )
+                        dataStore.setWeatherPrefs(updatedWeatherPrefs)
+                    }
+                }
             }
-        }
-    }
-
-    private fun millisToString(millis: Long): String {
-        return if (millis == 0L) {
-            ""
-        } else {
-            val formatter = SimpleDateFormat(DATE_TIME_PATTERN, Locale.getDefault())
-            formatter.format(millis)
         }
     }
 }

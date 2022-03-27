@@ -1,6 +1,5 @@
 package com.rustamft.weatherft.database.repo
 
-import com.rustamft.weatherft.database.entity.CitiesList
 import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
@@ -10,14 +9,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-interface Repo {
+interface WeatherRepo {
 
     @Module
     @InstallIn(SingletonComponent::class)
     abstract class RepoModule {
         @Binds
         @Singleton
-        abstract fun bindRepo(sharedPrefs: OpenWeatherRepo): Repo
+        abstract fun bindRepo(sharedPrefs: OpenWeatherRepo): WeatherRepo
     }
 
     suspend fun getCitiesList(city: String, apiKey: String): ArrayList<City>
