@@ -22,13 +22,13 @@ class WeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     val prefsFlow = dataStore.data
-    var apiKeyIsNotSet by mutableStateOf(false)
+    var prefsAreEmpty by mutableStateOf(false)
 
     fun updateData() {
         viewModelScope.launch {
             val weatherPrefs = prefsFlow.first()
-            if (weatherPrefs.apiKey == "") {
-                apiKeyIsNotSet = true
+            if (weatherPrefs.apiKey == "" || weatherPrefs.city.name == "") {
+                prefsAreEmpty = true
             } else {
                 with(weatherPrefs) {
                     val now = Calendar.getInstance().timeInMillis

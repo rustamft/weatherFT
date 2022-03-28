@@ -12,8 +12,7 @@ import com.rustamft.weatherft.database.datastore.setCity
 import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.repo.WeatherRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,17 +22,9 @@ class LoginViewModel @Inject constructor(
     private val repo: WeatherRepo
 ) : ViewModel() {
 
-    private val prefsFlow = dataStore.data
-    var apiKeyIsNotSet by mutableStateOf(false)
+    val prefsFlow = dataStore.data
     var listOfCities by mutableStateOf(listOf<City>())
-
-    init {
-        viewModelScope.launch {
-            prefsFlow.collectLatest {
-                apiKeyIsNotSet = it.apiKey == ""
-            }
-        }
-    }
+        private set
 
     fun setApiKey(key: String) {
         viewModelScope.launch {
@@ -55,7 +46,7 @@ class LoginViewModel @Inject constructor(
 
     fun updateCitiesList(cityName: String) {
         viewModelScope.launch {
-            listOfCities = repo.getCitiesList(cityName, prefsFlow.last().apiKey)
+            listOfCities = repo.getCitiesList(cityName, prefsFlow.first().apiKey)
         }
     }
 }

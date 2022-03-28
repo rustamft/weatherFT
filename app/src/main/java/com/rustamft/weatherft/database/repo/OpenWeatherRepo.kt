@@ -1,8 +1,6 @@
 package com.rustamft.weatherft.database.repo
 
 import android.util.Log
-import androidx.datastore.core.DataStore
-import com.rustamft.weatherft.database.datastore.WeatherPrefs
 import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
@@ -19,7 +17,6 @@ import javax.inject.Inject
 private const val TAG = "OpenWeatherRepo"
 
 class OpenWeatherRepo @Inject constructor(
-    private val dataStore: DataStore<WeatherPrefs>,
     private val api: OpenWeatherApi
 ) : WeatherRepo {
 

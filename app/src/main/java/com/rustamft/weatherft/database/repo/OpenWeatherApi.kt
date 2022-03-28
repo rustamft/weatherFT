@@ -1,6 +1,6 @@
 package com.rustamft.weatherft.database.repo
 
-import com.rustamft.weatherft.database.entity.CitiesList
+import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.entity.CurrentWeather
 import com.rustamft.weatherft.database.entity.WeatherForecast
 import dagger.Module
@@ -35,7 +35,7 @@ interface OpenWeatherApi {
         @Query("q") city: String,
         @Query("limit") limit: Int,
         @Query("appid") apiKey: String,
-    ): Response<CitiesList>
+    ): Response<ArrayList<City>>
 
     // https://api.openweathermap.org/data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily,alerts&appid=
     @GET("/data/2.5/onecall")

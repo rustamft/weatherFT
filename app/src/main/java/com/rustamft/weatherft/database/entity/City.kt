@@ -3,36 +3,39 @@ package com.rustamft.weatherft.database.entity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class CitiesList : ArrayList<City>()
-
 data class City(
-    val country: String = "GB",
-    val lat: Double = 51.48,
-    val local_names: LocalNames = LocalNames(),
-    val lon: Double = -0.00,
     val name: String = "",
-    val state: String = "England"
+    val local_names: LocalNames = LocalNames(),
+    val country: String = "",
+    val state: String = "",
+    val lat: Double = 0.0,
+    val lon: Double = 0.0
 ) {
 
     fun getLocalName(language: String): String {
         val map = local_names.serializeToMap()
-        return map.getValue(language)
+        val localName = map.getValue(language)
+        return if (localName != "") {
+            localName
+        } else {
+            name
+        }
     }
 }
 
 data class LocalNames(
-    val ar: String = "",
     val ascii: String = "",
-    val be: String = "Грынвіч",
+    val feature_name: String = "",
+    val ar: String = "",
+    val be: String = "",
     val ca: String = "",
     val cs: String = "",
     val cv: String = "",
     val de: String = "",
-    val en: String = "Greenwich",
-    val eo: String = "Grenviĉo",
+    val en: String = "",
+    val eo: String = "",
     val es: String = "",
     val et: String = "",
-    val feature_name: String = "",
     val fi: String = "",
     val fr: String = "",
     val hi: String = "",
@@ -49,7 +52,7 @@ data class LocalNames(
     val pl: String = "",
     val pt: String = "",
     val ro: String = "",
-    val ru: String = "Гринвич",
+    val ru: String = "",
     val sk: String = "",
     val sl: String = "",
     val uk: String = "",

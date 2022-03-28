@@ -13,9 +13,7 @@ data class WeatherPrefs(
     val lastTimeUpdatedMillis: Long = 0L
 ) {
 
-    val lastTimeUpdatedString by lazy {
-        millisToString(lastTimeUpdatedMillis)
-    }
+    val lastTimeUpdatedString = millisToString(lastTimeUpdatedMillis)
 
     private fun millisToString(millis: Long): String {
         return if (millis == 0L) {

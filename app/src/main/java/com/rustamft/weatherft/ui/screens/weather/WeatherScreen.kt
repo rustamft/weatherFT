@@ -22,10 +22,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
+import com.rustamft.weatherft.app.appLanguage
 import com.rustamft.weatherft.database.datastore.WeatherPrefs
 import com.rustamft.weatherft.ui.IconButtonElement
 import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
-import java.util.Locale
 
 @Destination(start = true)
 @Composable
@@ -37,7 +37,7 @@ fun WeatherScreen(
     val weatherPrefs = viewModel.prefsFlow.collectAsState(initial = WeatherPrefs()).value
 
     viewModel.updateData()
-    if (viewModel.apiKeyIsNotSet) {
+    if (viewModel.prefsAreEmpty) {
         navigator.navigate(LoginScreenDestination)
     }
 
@@ -53,7 +53,7 @@ fun WeatherScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = weatherPrefs.city.getLocalName(Locale.getDefault().language),
+                    text = weatherPrefs.city.getLocalName(appLanguage),
                     fontSize = 30.sp
                 )
                 Spacer(modifier = Modifier.width(9.dp))
