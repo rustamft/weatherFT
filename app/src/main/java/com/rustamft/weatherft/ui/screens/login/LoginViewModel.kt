@@ -12,7 +12,6 @@ import com.rustamft.weatherft.database.datastore.setCity
 import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.repo.WeatherRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,27 +25,16 @@ class LoginViewModel @Inject constructor(
     var listOfCities by mutableStateOf(listOf<City>())
         private set
 
-    fun setApiKey(key: String) {
-        viewModelScope.launch {
-            dataStore.setApiKey(key)
-        }
-    }
-
-    fun clearApiKey() {
-        viewModelScope.launch {
-            dataStore.setApiKey("")
-        }
-    }
-
     fun setCity(city: City) {
         viewModelScope.launch {
             dataStore.setCity(city)
         }
     }
 
-    fun updateCitiesList(cityName: String) {
+    fun updateListOfCities(cityName: String, apiKey: String) {
         viewModelScope.launch {
-            listOfCities = repo.getCitiesList(cityName, prefsFlow.first().apiKey)
+            launch { dataStore.setApiKey(apiKey) }
+            launch { listOfCities = repo.getCitiesList(cityName, apiKey) }
         }
     }
 }

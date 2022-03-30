@@ -84,7 +84,9 @@ fun LoginScreen(
                 label = stringResource(R.string.city)
             )
             IconButtonElement(
-                onClick = { viewModel.updateCitiesList(cityName) },
+                onClick = {
+                    viewModel.updateListOfCities(cityName, apiKey)
+                },
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = stringResource(R.string.find_city)
             )
@@ -106,7 +108,6 @@ fun LoginScreen(
             itemsIndexed(viewModel.listOfCities) { index: Int, item: City ->
                 TextButtonElement(
                     onClick = {
-                        viewModel.setApiKey(apiKey)
                         viewModel.setCity(item)
                         navigator.navigate(WeatherScreenDestination)
                     },
