@@ -84,7 +84,7 @@ fun LoginScreen(
                 label = stringResource(R.string.city)
             )
             IconButtonElement(
-                onClick = { viewModel.updateCitiesList(cityName) },
+                onClick = { viewModel.updateListOfCities(cityName) },
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = stringResource(R.string.find_city)
             )

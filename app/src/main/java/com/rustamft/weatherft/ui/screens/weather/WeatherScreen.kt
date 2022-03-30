@@ -19,13 +19,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.appLanguage
 import com.rustamft.weatherft.database.datastore.WeatherPrefs
 import com.rustamft.weatherft.ui.IconButtonElement
+import com.rustamft.weatherft.ui.OnLifecycleEvent
 import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
+import com.rustamft.weatherft.util.TimeProvider
 
 @Destination(start = true)
 @Composable
@@ -36,7 +39,11 @@ fun WeatherScreen(
 
     val weatherPrefs = viewModel.prefsFlow.collectAsState(initial = WeatherPrefs()).value
 
-    viewModel.updateData()
+    OnLifecycleEvent { owner, event ->
+        if (event == Lifecycle.Event.ON_RESUME) {
+            viewModel.updateData()
+        }
+    }
     if (viewModel.prefsAreEmpty) {
         navigator.navigate(LoginScreenDestination)
     }
@@ -66,7 +73,8 @@ fun WeatherScreen(
                 )
             }
             Text(
-                text = stringResource(R.string.updated_at) + weatherPrefs.lastTimeUpdatedString,
+                text = stringResource(R.string.updated_at) +
+                        TimeProvider.millisToString(weatherPrefs.lastTimeUpdated),
                 modifier = Modifier.offset(0.dp, 50.dp)
             )
         }

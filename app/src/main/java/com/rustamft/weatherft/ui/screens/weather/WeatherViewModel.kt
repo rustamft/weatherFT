@@ -9,10 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.rustamft.weatherft.database.datastore.WeatherPrefs
 import com.rustamft.weatherft.database.datastore.setWeatherPrefs
 import com.rustamft.weatherft.database.repo.WeatherRepo
+import com.rustamft.weatherft.util.TimeProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,9 +31,8 @@ class WeatherViewModel @Inject constructor(
                 prefsAreEmpty = true
             } else {
                 with(weatherPrefs) {
-                    val now = Calendar.getInstance().timeInMillis
-                    val fifteenMinutes = 15L * 60L * 1000L
-                    if (now - lastTimeUpdatedMillis > fifteenMinutes) {
+                    val now = TimeProvider.getNowAsMillis()
+                    if (now - lastTimeUpdated > TimeProvider.FIFTEEN_MINUTES) {
                         val updatedCurrentWeather = repo.getCurrentWeather(
                             city.lat,
                             city.lon,
@@ -41,7 +40,7 @@ class WeatherViewModel @Inject constructor(
                         )
                         val updatedWeatherPrefs = copy(
                             currentWeather = updatedCurrentWeather,
-                            lastTimeUpdatedMillis = now
+                            lastTimeUpdated = now
                         )
                         dataStore.setWeatherPrefs(updatedWeatherPrefs)
                     }

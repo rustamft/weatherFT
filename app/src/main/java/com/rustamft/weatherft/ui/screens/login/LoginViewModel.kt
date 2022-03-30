@@ -32,19 +32,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun clearApiKey() {
-        viewModelScope.launch {
-            dataStore.setApiKey("")
-        }
-    }
-
     fun setCity(city: City) {
         viewModelScope.launch {
             dataStore.setCity(city)
         }
     }
 
-    fun updateCitiesList(cityName: String) {
+    fun updateListOfCities(cityName: String) {
         viewModelScope.launch {
             listOfCities = repo.getCitiesList(cityName, prefsFlow.first().apiKey)
         }
