@@ -33,8 +33,13 @@ class LoginViewModel @Inject constructor(
 
     fun updateListOfCities(cityName: String, apiKey: String) {
         viewModelScope.launch {
-            launch { dataStore.setApiKey(apiKey) }
-            launch { listOfCities = repo.getCitiesList(cityName, apiKey) }
+            listOfCities = repo.getCitiesList(cityName, apiKey)
+        }
+    }
+
+    fun setApiKey(apiKey: String) {
+        viewModelScope.launch {
+            dataStore.setApiKey(apiKey)
         }
     }
 }

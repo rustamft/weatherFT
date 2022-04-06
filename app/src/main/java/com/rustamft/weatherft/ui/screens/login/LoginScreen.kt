@@ -27,13 +27,15 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.appLanguage
 import com.rustamft.weatherft.database.entity.City
-import com.rustamft.weatherft.ui.IconButtonElement
-import com.rustamft.weatherft.ui.TextButtonElement
-import com.rustamft.weatherft.ui.TextFieldElement
+import com.rustamft.weatherft.ui.elements.IconButtonElement
+import com.rustamft.weatherft.ui.elements.TextButtonElement
+import com.rustamft.weatherft.ui.elements.TextFieldElement
 import com.rustamft.weatherft.ui.screens.destinations.WeatherScreenDestination
+import com.rustamft.weatherft.ui.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.util.ROUTE_LOGIN
 import kotlinx.coroutines.flow.first
 
-@Destination
+@Destination(route = ROUTE_LOGIN)
 @Composable
 fun LoginScreen(
     navigator: DestinationsNavigator,
@@ -72,7 +74,6 @@ fun LoginScreen(
 
     @Composable
     fun CityElementsSet() {
-
         Row(
             modifier = Modifier.width(365.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -93,25 +94,26 @@ fun LoginScreen(
         }
     }
 
-    Column(
+    Column( // Contains all elements of the screen.
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ApiElementsSet()
         if (apiKey.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(9.dp))
+            Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
             CityElementsSet()
         }
-        Spacer(modifier = Modifier.height(9.dp))
+        Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
         LazyColumn {
-            itemsIndexed(viewModel.listOfCities) { index: Int, item: City ->
+            itemsIndexed(viewModel.listOfCities) { _: Int, city: City ->
                 TextButtonElement(
                     onClick = {
-                        viewModel.setCity(item)
+                        viewModel.setCity(city)
+                        viewModel.setApiKey(apiKey)
                         navigator.navigate(WeatherScreenDestination)
                     },
-                    text = "${item.getLocalName(appLanguage)}, ${item.state}, ${item.country}"
+                    text = "${city.getLocalName(appLanguage)}, ${city.state}, ${city.country}"
                 )
             }
         }
