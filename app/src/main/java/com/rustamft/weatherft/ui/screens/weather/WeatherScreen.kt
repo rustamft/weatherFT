@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -25,12 +24,16 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.appLanguage
 import com.rustamft.weatherft.database.datastore.WeatherPrefs
-import com.rustamft.weatherft.ui.IconButtonElement
-import com.rustamft.weatherft.ui.OnLifecycleEvent
+import com.rustamft.weatherft.ui.activity.OnLifecycleEvent
+import com.rustamft.weatherft.ui.elements.IconButtonElement
 import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
+import com.rustamft.weatherft.ui.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.ui.theme.FONT_SIZE_BIG
+import com.rustamft.weatherft.ui.theme.FONT_SIZE_NORMAL
+import com.rustamft.weatherft.util.ROUTE_WEATHER
 import com.rustamft.weatherft.util.TimeProvider
 
-@Destination(start = true)
+@Destination(start = true, route = ROUTE_WEATHER)
 @Composable
 fun WeatherScreen(
     navigator: DestinationsNavigator,
@@ -39,7 +42,7 @@ fun WeatherScreen(
 
     val weatherPrefs = viewModel.prefsFlow.collectAsState(initial = WeatherPrefs()).value
 
-    OnLifecycleEvent { owner, event ->
+    OnLifecycleEvent { _, event ->
         if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.updateData()
         }
@@ -61,9 +64,9 @@ fun WeatherScreen(
             ) {
                 Text(
                     text = weatherPrefs.city.getLocalName(appLanguage),
-                    fontSize = 30.sp
+                    fontSize = FONT_SIZE_NORMAL
                 )
-                Spacer(modifier = Modifier.width(9.dp))
+                Spacer(modifier = Modifier.width(DIMEN_MEDIUM))
                 IconButtonElement(
                     onClick = {
                         navigator.navigate(LoginScreenDestination)
@@ -82,7 +85,7 @@ fun WeatherScreen(
             Text(
                 text = weatherPrefs.currentWeather.current.temp.toString() +
                         stringResource(R.string.degrees_centigrade),
-                fontSize = 50.sp
+                fontSize = FONT_SIZE_BIG
             )
             Text(
                 text = stringResource(R.string.feels_like) +
@@ -93,7 +96,7 @@ fun WeatherScreen(
         }
         Text(
             text = weatherPrefs.currentWeather.current.weather[0].description,
-            fontSize = 30.sp
+            fontSize = FONT_SIZE_NORMAL
         )
     }
 }
