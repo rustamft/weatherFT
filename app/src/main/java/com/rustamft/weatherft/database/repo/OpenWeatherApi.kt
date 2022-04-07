@@ -1,8 +1,7 @@
 package com.rustamft.weatherft.database.repo
 
 import com.rustamft.weatherft.database.entity.City
-import com.rustamft.weatherft.database.entity.CurrentWeather
-import com.rustamft.weatherft.database.entity.WeatherForecast
+import com.rustamft.weatherft.database.entity.Weather
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,17 +36,14 @@ interface OpenWeatherApi {
         @Query("appid") apiKey: String,
     ): Response<ArrayList<City>>
 
-    // https://api.openweathermap.org/data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,daily,alerts&appid=
+    // https://api.openweathermap.org/data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,alerts&appid=
     @GET("/data/2.5/onecall")
-    suspend fun getCurrentWeather(
+    suspend fun getWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("exclude") exclude: String,
         @Query("units") units: String,
         @Query("appid") apiKey: String,
         @Query("lang") language: String
-    ): Response<CurrentWeather>
-
-    @GET("")
-    suspend fun getWeatherForecast(): Response<WeatherForecast>
+    ): Response<Weather>
 }

@@ -33,13 +33,13 @@ class WeatherViewModel @Inject constructor(
                 with(weatherPrefs) {
                     val now = TimeProvider.getNowAsMillis()
                     if (now - lastTimeUpdated > TimeProvider.FIFTEEN_MINUTES) {
-                        val updatedCurrentWeather = repo.getCurrentWeather(
+                        val updatedCurrentWeather = repo.getWeather(
                             city.lat,
                             city.lon,
                             apiKey
                         )
                         val updatedWeatherPrefs = copy(
-                            currentWeather = updatedCurrentWeather,
+                            weather = updatedCurrentWeather,
                             lastTimeUpdated = now
                         )
                         dataStore.setWeatherPrefs(updatedWeatherPrefs)

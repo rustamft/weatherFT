@@ -2,9 +2,8 @@ package com.rustamft.weatherft.database.repo
 
 import android.util.Log
 import com.rustamft.weatherft.database.entity.City
-import com.rustamft.weatherft.database.entity.CurrentWeather
-import com.rustamft.weatherft.database.entity.WeatherForecast
-import com.rustamft.weatherft.util.EXCLUDE_ALL
+import com.rustamft.weatherft.database.entity.Weather
+import com.rustamft.weatherft.util.EXCLUDE_WEATHER
 import com.rustamft.weatherft.util.METRIC
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,25 +29,21 @@ class OpenWeatherRepo @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentWeather(
+    override suspend fun getWeather(
         lat: Double,
         lon: Double,
         apiKey: String
-    ): CurrentWeather {
+    ): Weather {
         return makeApiCall {
-            api.getCurrentWeather(
+            api.getWeather(
                 lat,
                 lon,
-                EXCLUDE_ALL,
+                EXCLUDE_WEATHER,
                 METRIC,
                 apiKey,
                 Locale.getDefault().language
             )
         }
-    }
-
-    override suspend fun getWeatherForecast(): WeatherForecast {
-        TODO("Not yet implemented")
     }
 
     private suspend fun <T> makeApiCall(call: suspend () -> Response<T>): T {

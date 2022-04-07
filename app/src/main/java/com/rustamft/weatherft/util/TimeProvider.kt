@@ -12,8 +12,8 @@ object TimeProvider {
         return Calendar.getInstance().timeInMillis
     }
 
-    fun millisToString(millis: Long): String {
-        return SimpleDateFormat(DATE_TIME_PATTERN, Locale.getDefault()).format(
+    fun millisToString(millis: Long, pattern: String): String {
+        return SimpleDateFormat(pattern, Locale.getDefault()).format(
             millis
         )
     }

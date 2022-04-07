@@ -30,6 +30,7 @@ import com.rustamft.weatherft.ui.screens.destinations.LoginScreenDestination
 import com.rustamft.weatherft.ui.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.ui.theme.FONT_SIZE_BIG
 import com.rustamft.weatherft.ui.theme.FONT_SIZE_NORMAL
+import com.rustamft.weatherft.util.PATTERN_DATE_TIME
 import com.rustamft.weatherft.util.ROUTE_WEATHER
 import com.rustamft.weatherft.util.TimeProvider
 
@@ -77,25 +78,25 @@ fun WeatherScreen(
             }
             Text(
                 text = stringResource(R.string.updated_at) +
-                        TimeProvider.millisToString(weatherPrefs.lastTimeUpdated),
+                        TimeProvider.millisToString(weatherPrefs.lastTimeUpdated, PATTERN_DATE_TIME),
                 modifier = Modifier.offset(0.dp, 50.dp)
             )
         }
         Box(contentAlignment = Alignment.TopCenter) {
             Text(
-                text = weatherPrefs.currentWeather.current.temp.toString() +
+                text = weatherPrefs.weather.current.temp.toString() +
                         stringResource(R.string.degrees_centigrade),
                 fontSize = FONT_SIZE_BIG
             )
             Text(
                 text = stringResource(R.string.feels_like) +
-                        weatherPrefs.currentWeather.current.feels_like +
+                        weatherPrefs.weather.current.feels_like +
                         stringResource(R.string.degrees_centigrade),
                 modifier = Modifier.offset(0.dp, 60.dp)
             )
         }
         Text(
-            text = weatherPrefs.currentWeather.current.weather[0].description,
+            text = weatherPrefs.weather.current.weather[0].description,
             fontSize = FONT_SIZE_NORMAL
         )
     }
