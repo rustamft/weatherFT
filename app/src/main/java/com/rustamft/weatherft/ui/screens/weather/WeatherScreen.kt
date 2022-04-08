@@ -22,7 +22,6 @@ import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
-import com.rustamft.weatherft.app.appLanguage
 import com.rustamft.weatherft.database.datastore.WeatherPrefs
 import com.rustamft.weatherft.ui.activity.OnLifecycleEvent
 import com.rustamft.weatherft.ui.elements.IconButtonElement
@@ -33,6 +32,7 @@ import com.rustamft.weatherft.ui.theme.FONT_SIZE_NORMAL
 import com.rustamft.weatherft.util.PATTERN_DATE_TIME
 import com.rustamft.weatherft.util.ROUTE_WEATHER
 import com.rustamft.weatherft.util.TimeProvider
+import com.rustamft.weatherft.util.appLanguage
 
 @Destination(start = true, route = ROUTE_WEATHER)
 @Composable
@@ -78,7 +78,10 @@ fun WeatherScreen(
             }
             Text(
                 text = stringResource(R.string.updated_at) +
-                        TimeProvider.millisToString(weatherPrefs.lastTimeUpdated, PATTERN_DATE_TIME),
+                        TimeProvider.millisToString(
+                            weatherPrefs.lastTimeUpdated,
+                            PATTERN_DATE_TIME
+                        ),
                 modifier = Modifier.offset(0.dp, 50.dp)
             )
         }

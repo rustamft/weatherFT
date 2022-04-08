@@ -5,6 +5,7 @@ import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.database.entity.Weather
 import com.rustamft.weatherft.util.EXCLUDE_WEATHER
 import com.rustamft.weatherft.util.METRIC
+import com.rustamft.weatherft.util.TAG_OPEN_WEATHER_REPO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -12,8 +13,6 @@ import retrofit2.Response
 import java.io.IOException
 import java.util.Locale
 import javax.inject.Inject
-
-private const val TAG = "OpenWeatherRepo"
 
 class OpenWeatherRepo @Inject constructor(
     private val api: OpenWeatherApi
@@ -23,9 +22,10 @@ class OpenWeatherRepo @Inject constructor(
         return if (city == "" || apiKey == "") {
             ArrayList()
         } else {
-            makeApiCall {
+            val result = makeApiCall {
                 api.getCitiesList(city, 5, apiKey)
             }
+            result.getOrThrow()
         }
     }
 
@@ -34,7 +34,7 @@ class OpenWeatherRepo @Inject constructor(
         lon: Double,
         apiKey: String
     ): Weather {
-        return makeApiCall {
+        val result = makeApiCall {
             api.getWeather(
                 lat,
                 lon,
@@ -44,25 +44,33 @@ class OpenWeatherRepo @Inject constructor(
                 Locale.getDefault().language
             )
         }
+        return result.getOrThrow()
     }
 
-    private suspend fun <T> makeApiCall(call: suspend () -> Response<T>): T {
-        return withContext(Dispatchers.IO) {
-            val response: Response<T> = try {
-                call()
-            } catch (e: IOException) {
-                Log.e(TAG, "IOException, internet connection might have been lost.")
-                throw e
-            } catch (e: HttpException) {
-                Log.e(TAG, "HttpException, unexpected response.")
-                throw e
-            }
-            return@withContext if (response.isSuccessful && response.body() != null) {
+    private suspend fun <T> makeApiCall(call: suspend () -> Response<T>): Result<T> {
+        val result = withContext(Dispatchers.IO) {
+            runCatching {
+                val response: Response<T> = call()
                 response.body()!!
-            } else {
-                Log.e(TAG, "Response is not successful.")
-                throw Exception("Unknown exception.")
             }
         }
+        result.onFailure {
+            val message = when (it) {
+                is IOException -> {
+                    "IOException, internet connection might have been lost."
+                }
+                is HttpException -> {
+                    "HttpException, unexpected response."
+                }
+                is NullPointerException -> {
+                    "Response is not successful."
+                }
+                else -> {
+                    "Unknown exception."
+                }
+            }
+            Log.e(TAG_OPEN_WEATHER_REPO, message)
+        }
+        return result
     }
 }

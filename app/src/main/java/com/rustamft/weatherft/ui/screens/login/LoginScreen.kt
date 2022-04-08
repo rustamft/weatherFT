@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
-import com.rustamft.weatherft.app.appLanguage
 import com.rustamft.weatherft.database.entity.City
 import com.rustamft.weatherft.ui.elements.IconButtonElement
 import com.rustamft.weatherft.ui.elements.TextButtonElement
@@ -33,6 +32,7 @@ import com.rustamft.weatherft.ui.elements.TextFieldElement
 import com.rustamft.weatherft.ui.screens.destinations.WeatherScreenDestination
 import com.rustamft.weatherft.ui.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.util.ROUTE_LOGIN
+import com.rustamft.weatherft.util.appLanguage
 import kotlinx.coroutines.flow.first
 
 @Destination(route = ROUTE_LOGIN)

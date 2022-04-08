@@ -11,3 +11,5 @@ const val METRIC = "metric"
 
 const val PATTERN_DATE_TIME = "dd.MM.yyyy HH:mm"
 const val PATTERN_DATE = "dd.MM.yyyy"
+
+const val TAG_OPEN_WEATHER_REPO = "OPEN_WEATHER_REPO"

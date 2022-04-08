@@ -3,6 +3,7 @@ package com.rustamft.weatherft.ui.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -28,8 +29,10 @@ class MainActivity : ComponentActivity() {
             WeatherFTTheme {
 
                 val navController = rememberNavController()
+                // TODO: create snackbar state to notify from anywhere
 
                 Scaffold(
+                    modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         BottomNavBar(
                             navController = navController,
@@ -50,7 +53,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {
-                    DestinationsNavHost(navGraph = NavGraphs.root, navController = navController)
+                    DestinationsNavHost(
+                        navGraph = NavGraphs.root,
+                        navController = navController
+                    )
                 }
             }
         }
