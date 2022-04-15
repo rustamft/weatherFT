@@ -1,5 +1,6 @@
 package com.rustamft.weatherft.ui.screens.login
 
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,15 +32,23 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateListOfCities(cityName: String, apiKey: String) {
-        viewModelScope.launch {
-            listOfCities = repo.getCitiesList(cityName, apiKey)
-        }
-    }
-
     fun setApiKey(apiKey: String) {
         viewModelScope.launch {
             dataStore.setApiKey(apiKey)
+        }
+    }
+
+    fun updateListOfCities(
+        scaffoldState: ScaffoldState,
+        cityName: String,
+        apiKey: String
+    ) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                listOfCities = repo.getCitiesList(cityName, apiKey)
+            }.onFailure {
+                scaffoldState.snackbarHostState.showSnackbar(it.message.toString())
+            }
         }
     }
 }

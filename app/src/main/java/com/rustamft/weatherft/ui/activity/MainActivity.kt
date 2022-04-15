@@ -9,9 +9,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.dependency
 import com.rustamft.weatherft.ui.navigation.BottomNavBar
 import com.rustamft.weatherft.ui.navigation.BottomNavItem
 import com.rustamft.weatherft.ui.screens.NavGraphs
@@ -28,11 +30,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherFTTheme {
 
+                val scaffoldState = rememberScaffoldState()
                 val navController = rememberNavController()
-                // TODO: create snackbar state to notify from anywhere
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    scaffoldState = scaffoldState,
                     bottomBar = {
                         BottomNavBar(
                             navController = navController,
@@ -55,7 +58,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     DestinationsNavHost(
                         navGraph = NavGraphs.root,
-                        navController = navController
+                        navController = navController,
+                        dependenciesContainerBuilder = {
+                            dependency(scaffoldState)
+                        }
                     )
                 }
             }

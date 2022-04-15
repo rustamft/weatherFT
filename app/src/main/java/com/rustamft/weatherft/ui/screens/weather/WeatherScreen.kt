@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,14 +39,15 @@ import com.rustamft.weatherft.util.appLanguage
 @Composable
 fun WeatherScreen(
     navigator: DestinationsNavigator,
-    viewModel: WeatherViewModel = hiltViewModel()
+    viewModel: WeatherViewModel = hiltViewModel(),
+    scaffoldState: ScaffoldState
 ) {
 
     val weatherPrefs = viewModel.prefsFlow.collectAsState(initial = WeatherPrefs()).value
 
     OnLifecycleEvent { _, event ->
         if (event == Lifecycle.Event.ON_RESUME) {
-            viewModel.updateData()
+            viewModel.updateData(scaffoldState)
         }
     }
     if (viewModel.prefsAreEmpty) {
@@ -101,6 +103,11 @@ fun WeatherScreen(
         Text(
             text = weatherPrefs.weather.current.weather[0].description,
             fontSize = FONT_SIZE_NORMAL
+        )
+        Text(
+            text = stringResource(R.string.wind) +
+                    weatherPrefs.weather.current.wind_speed +
+                    stringResource(R.string.meters_per_second)
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,7 +40,8 @@ import kotlinx.coroutines.flow.first
 @Composable
 fun LoginScreen(
     navigator: DestinationsNavigator,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    scaffoldState: ScaffoldState
 ) {
 
     val scope = rememberCoroutineScope()
@@ -58,7 +60,6 @@ fun LoginScreen(
 
     @Composable
     fun ApiElementsSet() {
-        // TODO: rearrange this
         Row(
             modifier = Modifier.width(365.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -86,7 +87,7 @@ fun LoginScreen(
             )
             IconButtonElement(
                 onClick = {
-                    viewModel.updateListOfCities(cityName, apiKey)
+                    viewModel.updateListOfCities(scaffoldState, cityName, apiKey)
                 },
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = stringResource(R.string.find_city)

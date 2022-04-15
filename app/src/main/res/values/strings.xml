@@ -9,4 +9,8 @@
     <string name="city">City</string>
     <string name="open_weather_api_key">Open Weather API key</string>
     <string name="save_api_key">Save API key</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="wind">Wind:\ </string>
+    <string name="meters_per_second">\ m/s</string>
 </resources>

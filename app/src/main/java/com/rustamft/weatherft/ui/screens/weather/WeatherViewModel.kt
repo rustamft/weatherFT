@@ -1,5 +1,6 @@
 package com.rustamft.weatherft.ui.screens.weather
 
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,7 +25,7 @@ class WeatherViewModel @Inject constructor(
     val prefsFlow = dataStore.data
     var prefsAreEmpty by mutableStateOf(false)
 
-    fun updateData() {
+    fun updateData(scaffoldState: ScaffoldState) {
         viewModelScope.launch {
             val weatherPrefs = prefsFlow.first()
             if (weatherPrefs.apiKey == "" || weatherPrefs.city.name == "") {
@@ -33,16 +34,20 @@ class WeatherViewModel @Inject constructor(
                 with(weatherPrefs) {
                     val now = TimeProvider.getNowAsMillis()
                     if (now - lastTimeUpdated > TimeProvider.FIFTEEN_MINUTES) {
-                        val updatedCurrentWeather = repo.getWeather(
-                            city.lat,
-                            city.lon,
-                            apiKey
-                        )
-                        val updatedWeatherPrefs = copy(
-                            weather = updatedCurrentWeather,
-                            lastTimeUpdated = now
-                        )
-                        dataStore.setWeatherPrefs(updatedWeatherPrefs)
+                        kotlin.runCatching {
+                            val updatedCurrentWeather = repo.getWeather(
+                                city.lat,
+                                city.lon,
+                                apiKey
+                            )
+                            val updatedWeatherPrefs = copy(
+                                weather = updatedCurrentWeather,
+                                lastTimeUpdated = now
+                            )
+                            dataStore.setWeatherPrefs(updatedWeatherPrefs)
+                        }.onFailure {
+                            scaffoldState.snackbarHostState.showSnackbar(it.message.toString())
+                        }
                     }
                 }
             }

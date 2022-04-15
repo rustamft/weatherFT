@@ -22,10 +22,9 @@ class OpenWeatherRepo @Inject constructor(
         return if (city == "" || apiKey == "") {
             ArrayList()
         } else {
-            val result = makeApiCall {
+            makeApiCall {
                 api.getCitiesList(city, 5, apiKey)
-            }
-            result.getOrThrow()
+            }.getOrThrow()
         }
     }
 
@@ -34,7 +33,7 @@ class OpenWeatherRepo @Inject constructor(
         lon: Double,
         apiKey: String
     ): Weather {
-        val result = makeApiCall {
+        return makeApiCall {
             api.getWeather(
                 lat,
                 lon,
@@ -43,34 +42,35 @@ class OpenWeatherRepo @Inject constructor(
                 apiKey,
                 Locale.getDefault().language
             )
-        }
-        return result.getOrThrow()
+        }.getOrThrow()
     }
 
     private suspend fun <T> makeApiCall(call: suspend () -> Response<T>): Result<T> {
-        val result = withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             runCatching {
                 val response: Response<T> = call()
                 response.body()!!
+            }.onFailure {
+                Log.e(TAG_OPEN_WEATHER_REPO, it.message.toString())
+                rethrow(it)
             }
         }
-        result.onFailure {
-            val message = when (it) {
-                is IOException -> {
-                    "IOException, internet connection might have been lost."
-                }
-                is HttpException -> {
-                    "HttpException, unexpected response."
-                }
-                is NullPointerException -> {
-                    "Response is not successful."
-                }
-                else -> {
-                    "Unknown exception."
-                }
+    }
+
+    private fun rethrow(throwable: Throwable) {
+        when (throwable) {
+            is IOException -> {
+                throw IOException("IOException, internet connection might have been lost.")
             }
-            Log.e(TAG_OPEN_WEATHER_REPO, message)
+            is HttpException -> {
+                throw HttpException(throwable.response()!!)
+            }
+            is NullPointerException -> {
+                throw NullPointerException("Response is not successful.")
+            }
+            else -> {
+                throw Exception("Unknown exception.")
+            }
         }
-        return result
     }
 }
