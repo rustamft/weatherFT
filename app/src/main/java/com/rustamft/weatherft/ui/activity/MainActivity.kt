@@ -17,7 +17,7 @@ import com.ramcosta.composedestinations.navigation.dependency
 import com.rustamft.weatherft.ui.navigation.BottomNavBar
 import com.rustamft.weatherft.ui.navigation.BottomNavItem
 import com.rustamft.weatherft.ui.screens.NavGraphs
-import com.rustamft.weatherft.ui.theme.WeatherFTTheme
+import com.rustamft.weatherft.ui.theme.AppTheme
 import com.rustamft.weatherft.util.ROUTE_FORECAST
 import com.rustamft.weatherft.util.ROUTE_WEATHER
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WeatherFTTheme {
+            AppTheme {
 
                 val scaffoldState = rememberScaffoldState()
                 val navController = rememberNavController()
