@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -18,6 +19,7 @@ import com.rustamft.weatherft.ui.navigation.BottomNavBar
 import com.rustamft.weatherft.ui.navigation.BottomNavItem
 import com.rustamft.weatherft.ui.screens.NavGraphs
 import com.rustamft.weatherft.ui.theme.AppTheme
+import com.rustamft.weatherft.ui.theme.DIMEN_BIG
 import com.rustamft.weatherft.util.ROUTE_FORECAST
 import com.rustamft.weatherft.util.ROUTE_WEATHER
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +59,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     DestinationsNavHost(
+                        modifier = Modifier.padding(bottom = DIMEN_BIG),
                         navGraph = NavGraphs.root,
                         navController = navController,
                         dependenciesContainerBuilder = {

@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val DIMEN_MEDIUM = 9.dp
+val DIMEN_BIG = 50.dp
 
 val FONT_SIZE_SMALL = 20.sp
 val FONT_SIZE_NORMAL = 30.sp
