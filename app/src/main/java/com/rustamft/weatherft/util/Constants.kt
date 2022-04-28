@@ -1,6 +1,6 @@
 package com.rustamft.weatherft.util
 
-const val WEATHER_PREFS = "weather-prefs.json"
+const val STORED_PREFERENCES = "stored_preferences.json"
 
 const val ROUTE_LOGIN = "login_screen"
 const val ROUTE_WEATHER = "weather_screen"
@@ -12,4 +12,4 @@ const val METRIC = "metric"
 const val PATTERN_DATE_TIME = "dd.MM.yyyy HH:mm"
 const val PATTERN_DATE = "dd.MM.yyyy"
 
-const val TAG_OPEN_WEATHER_REPO = "OPEN_WEATHER_REPO"
+const val TAG_OPEN_WEATHER_API = "OPEN_WEATHER_API"
