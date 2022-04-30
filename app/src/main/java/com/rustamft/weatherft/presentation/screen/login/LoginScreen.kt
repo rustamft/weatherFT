@@ -20,14 +20,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
-import com.rustamft.weatherft.app.appLanguage
-import com.rustamft.weatherft.domain.model.City
+import com.rustamft.weatherft.app.App
+import com.rustamft.weatherft.domain.util.ROUTE_LOGIN
 import com.rustamft.weatherft.presentation.element.IconButtonElement
 import com.rustamft.weatherft.presentation.element.TextButtonElement
 import com.rustamft.weatherft.presentation.element.TextFieldElement
 import com.rustamft.weatherft.presentation.screen.destinations.WeatherScreenDestination
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
-import com.rustamft.weatherft.util.ROUTE_LOGIN
 
 @Destination(route = ROUTE_LOGIN)
 @Composable
@@ -86,14 +85,14 @@ internal fun LoginScreen(
         }
         Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
         LazyColumn {
-            itemsIndexed(viewModel.listOfCities) { _: Int, city: City ->
+            itemsIndexed(viewModel.listOfCities) { _: Int, city: com.rustamft.weatherft.domain.model.City ->
                 TextButtonElement(
                     onClick = {
                         viewModel.saveCity(city)
                         viewModel.saveApiKey()
                         navigator.navigate(WeatherScreenDestination)
                     },
-                    text = "${city.getLocalName(appLanguage)}, ${city.state}, ${city.country}"
+                    text = "${city.localNames[App.language]}, ${city.state}, ${city.country}"
                 )
             }
         }

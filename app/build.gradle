@@ -27,7 +27,7 @@ android {
         minSdk 21
         targetSdk 32
         versionCode 1
-        versionName "0.6.0"
+        versionName "0.6.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -63,6 +63,8 @@ android {
 
 dependencies {
 
+    implementation project(path: ':domain')
+    implementation project(path: ':data')
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     testImplementation 'junit:junit:4.13.2'
@@ -82,7 +84,7 @@ dependencies {
     implementation 'io.github.raamcosta.compose-destinations:core:1.5.1-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.5.1-beta'
     // DataStore.
-    implementation "androidx.datastore:datastore:1.0.0"
+    implementation 'androidx.datastore:datastore:1.0.0'
     // Retrofit.
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'

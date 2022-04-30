@@ -24,18 +24,16 @@ import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
-import com.rustamft.weatherft.app.appLanguage
-import com.rustamft.weatherft.domain.model.City
-import com.rustamft.weatherft.domain.model.Weather
+import com.rustamft.weatherft.app.App
+import com.rustamft.weatherft.domain.util.PATTERN_DATE_TIME
+import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
+import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
 import com.rustamft.weatherft.presentation.element.IconButtonElement
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_BIG
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_NORMAL
-import com.rustamft.weatherft.util.PATTERN_DATE_TIME
-import com.rustamft.weatherft.util.ROUTE_WEATHER
-import com.rustamft.weatherft.util.TimeProvider
 
 @Destination(start = true, route = ROUTE_WEATHER)
 @Composable
@@ -45,8 +43,12 @@ fun WeatherScreen(
     scaffoldState: ScaffoldState
 ) {
 
-    val city by viewModel.cityFlow.collectAsState(initial = City("..."))
-    val weather by viewModel.weatherFlow.collectAsState(initial = Weather())
+    val city by viewModel.cityFlow.collectAsState(
+        initial = com.rustamft.weatherft.domain.model.City(
+            "..."
+        )
+    )
+    val weather by viewModel.weatherFlow.collectAsState(initial = com.rustamft.weatherft.domain.model.Weather())
 
     if (city.name == "") {
         navigator.navigate(LoginScreenDestination)
@@ -70,7 +72,7 @@ fun WeatherScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = city.getLocalName(appLanguage),
+                    text = city.localNames[App.language] ?: city.name,
                     fontSize = FONT_SIZE_NORMAL
                 )
                 Spacer(modifier = Modifier.width(DIMEN_MEDIUM))
@@ -84,10 +86,10 @@ fun WeatherScreen(
             }
             Text(
                 text = "${stringResource(R.string.updated_at)} ${
-                TimeProvider.millisToString(
-                    weather.current.dt * 1000L,
-                    PATTERN_DATE_TIME
-                )
+                    TimeProvider.millisToString(
+                        weather.current.dt * 1000L,
+                        PATTERN_DATE_TIME
+                    )
                 }",
                 modifier = Modifier.offset(0.dp, 50.dp)
             )
@@ -98,8 +100,8 @@ fun WeatherScreen(
                 fontSize = FONT_SIZE_BIG
             )
             Text(
-                text = "${stringResource(R.string.feels_like)}${weather.current.feels_like}${
-                stringResource(R.string.degrees_centigrade)
+                text = "${stringResource(R.string.feels_like)} ${weather.current.feels_like}${
+                    stringResource(R.string.degrees_centigrade)
                 }",
                 modifier = Modifier.offset(0.dp, 60.dp)
             )
@@ -109,8 +111,8 @@ fun WeatherScreen(
             fontSize = FONT_SIZE_NORMAL
         )
         Text(
-            text = "${stringResource(R.string.wind)}${weather.current.wind_speed}${
-            stringResource(R.string.meters_per_second)
+            text = "${stringResource(R.string.wind)} ${weather.current.wind_speed} ${
+                stringResource(R.string.meters_per_second)
             }"
         )
     }

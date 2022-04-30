@@ -4,7 +4,10 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 
-val appLanguage: String get() = Locale.getDefault().language
-
 @HiltAndroidApp
-class App : Application()
+class App : Application() {
+
+    companion object App {
+        val language: String get() = Locale.getDefault().language
+    }
+}

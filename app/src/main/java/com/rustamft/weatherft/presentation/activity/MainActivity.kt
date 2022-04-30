@@ -20,8 +20,8 @@ import com.rustamft.weatherft.presentation.navigation.BottomNavItem
 import com.rustamft.weatherft.presentation.screen.NavGraphs
 import com.rustamft.weatherft.presentation.theme.AppTheme
 import com.rustamft.weatherft.presentation.theme.DIMEN_BIG
-import com.rustamft.weatherft.util.ROUTE_FORECAST
-import com.rustamft.weatherft.util.ROUTE_WEATHER
+import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
+import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

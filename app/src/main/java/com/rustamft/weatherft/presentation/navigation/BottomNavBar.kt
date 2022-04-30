@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
-import com.rustamft.weatherft.util.ROUTE_LOGIN
+import com.rustamft.weatherft.domain.util.ROUTE_LOGIN
 
 @Composable
 fun BottomNavBar(

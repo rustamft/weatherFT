@@ -20,12 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.rustamft.weatherft.R
-import com.rustamft.weatherft.domain.model.Weather
+import com.rustamft.weatherft.domain.util.PATTERN_DATE
+import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
+import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_SMALL
-import com.rustamft.weatherft.util.PATTERN_DATE
-import com.rustamft.weatherft.util.ROUTE_FORECAST
-import com.rustamft.weatherft.util.TimeProvider
 
 @Destination(route = ROUTE_FORECAST)
 @Composable
@@ -33,13 +32,13 @@ fun ForecastScreen(
     viewModel: ForecastViewModel = hiltViewModel()
 ) {
 
-    val weather by viewModel.weatherFlow.collectAsState(initial = Weather())
+    val weather by viewModel.weatherFlow.collectAsState(initial = com.rustamft.weatherft.domain.model.Weather())
 
     LazyColumn(
         modifier = Modifier.padding(DIMEN_MEDIUM),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        itemsIndexed(weather.daily) { index: Int, daily: Weather.Daily ->
+        itemsIndexed(weather.daily) { index: Int, daily: com.rustamft.weatherft.domain.model.Weather.Daily ->
 
             val time = when (index) {
                 0 -> stringResource(R.string.today)
