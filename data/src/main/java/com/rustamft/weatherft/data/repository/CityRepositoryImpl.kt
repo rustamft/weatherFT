@@ -1,6 +1,6 @@
 package com.rustamft.weatherft.data.repository
 
-import com.rustamft.weatherft.data.storage.ApiWrapper
+import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.data.storage.CityStorage
 import com.rustamft.weatherft.domain.model.ApiKey
 import com.rustamft.weatherft.domain.model.City
@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 
-class CityRepositoryImpl(
+internal class CityRepositoryImpl(
     private val cityStorage: CityStorage,
-    private val api: ApiWrapper
+    private val api: ExternalApi
 ) : CityRepository {
 
     override suspend fun saveCity(city: City) {

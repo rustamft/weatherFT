@@ -1,4 +1,4 @@
-package com.rustamft.weatherft.di
+package com.rustamft.weatherft.data.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -9,7 +9,7 @@ import com.rustamft.weatherft.data.repository.ApiKeyRepositoryImpl
 import com.rustamft.weatherft.data.repository.CityRepositoryImpl
 import com.rustamft.weatherft.data.repository.WeatherRepositoryImpl
 import com.rustamft.weatherft.data.storage.ApiKeyStorage
-import com.rustamft.weatherft.data.storage.ApiWrapper
+import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.data.storage.CityStorage
 import com.rustamft.weatherft.data.storage.WeatherStorage
 import com.rustamft.weatherft.data.storage.api.OpenWeatherApi
@@ -35,7 +35,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataModule {
+internal class DataModule {
 
     @Provides
     @Singleton
@@ -72,7 +72,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideApiWrapper(openWeatherApi: OpenWeatherApi): ApiWrapper {
+    fun provideApiWrapper(openWeatherApi: OpenWeatherApi): ExternalApi {
         return OpenWeatherApiWrapper(openWeatherApi)
     }
 
@@ -84,7 +84,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideCityRepository(cityStorage: CityStorage, apiWrapper: ApiWrapper): CityRepository {
+    fun provideCityRepository(cityStorage: CityStorage, apiWrapper: ExternalApi): CityRepository {
         return CityRepositoryImpl(cityStorage, apiWrapper)
     }
 
@@ -96,7 +96,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(weatherStorage: WeatherStorage, apiWrapper: ApiWrapper): WeatherRepository {
+    fun provideWeatherRepository(weatherStorage: WeatherStorage, apiWrapper: ExternalApi): WeatherRepository {
         return WeatherRepositoryImpl(weatherStorage, apiWrapper)
     }
 }

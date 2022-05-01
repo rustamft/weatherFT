@@ -3,7 +3,7 @@ package com.rustamft.weatherft.data.storage
 import com.rustamft.weatherft.data.model.CityData
 import com.rustamft.weatherft.data.model.WeatherData
 
-interface ApiWrapper {
+internal interface ExternalApi {
 
     suspend fun searchCity(
         cityName: String,

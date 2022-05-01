@@ -5,7 +5,7 @@ import com.google.gson.JsonSyntaxException
 import java.io.InputStream
 import java.io.OutputStream
 
-data class StoredPreferences(
+internal data class StoredPreferences(
     val apiKeyData: ApiKeyData = ApiKeyData(),
     val cityData: CityData = CityData(),
     val weatherData: WeatherData = WeatherData()

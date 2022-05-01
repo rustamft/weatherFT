@@ -6,7 +6,7 @@ import com.rustamft.weatherft.domain.repository.ApiKeyRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ApiKeyRepositoryImpl(
+internal class ApiKeyRepositoryImpl(
     private val apiKeyStorage: ApiKeyStorage
 ) : ApiKeyRepository {
 

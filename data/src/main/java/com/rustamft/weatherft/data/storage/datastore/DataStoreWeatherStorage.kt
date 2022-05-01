@@ -7,7 +7,7 @@ import com.rustamft.weatherft.data.storage.WeatherStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
-class DataStoreWeatherStorage(
+internal class DataStoreWeatherStorage(
     private val dataStore: DataStore<StoredPreferences>
 ) : WeatherStorage {
 

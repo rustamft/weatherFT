@@ -6,7 +6,7 @@ import com.rustamft.weatherft.data.model.StoredPreferences
 import com.rustamft.weatherft.data.storage.ApiKeyStorage
 import kotlinx.coroutines.flow.first
 
-class DataStoreApiKeyStorage(
+internal class DataStoreApiKeyStorage(
     private val dataStore: DataStore<StoredPreferences>
 ) : ApiKeyStorage {
 

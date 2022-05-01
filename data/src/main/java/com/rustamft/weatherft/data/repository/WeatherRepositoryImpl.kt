@@ -1,6 +1,6 @@
 package com.rustamft.weatherft.data.repository
 
-import com.rustamft.weatherft.data.storage.ApiWrapper
+import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.data.storage.WeatherStorage
 import com.rustamft.weatherft.domain.model.ApiKey
 import com.rustamft.weatherft.domain.model.City
@@ -11,9 +11,9 @@ import com.rustamft.weatherft.domain.util.UNITS_METRIC
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
-class WeatherRepositoryImpl(
+internal class WeatherRepositoryImpl(
     private val weatherStorage: WeatherStorage,
-    private val apiWrapper: ApiWrapper
+    private val apiWrapper: ExternalApi
 ) : WeatherRepository {
 
     override suspend fun saveWeatherToStorage(weather: Weather) {

@@ -3,7 +3,7 @@ package com.rustamft.weatherft.data.storage.api
 import android.util.Log
 import com.rustamft.weatherft.data.model.CityData
 import com.rustamft.weatherft.data.model.WeatherData
-import com.rustamft.weatherft.data.storage.ApiWrapper
+import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.domain.util.TAG_OPEN_WEATHER_API
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,9 +11,9 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-class OpenWeatherApiWrapper(
+internal class OpenWeatherApiWrapper(
     private val openWeatherApi: OpenWeatherApi
-) : ApiWrapper {
+) : ExternalApi {
 
     override suspend fun searchCity(
         cityName: String,

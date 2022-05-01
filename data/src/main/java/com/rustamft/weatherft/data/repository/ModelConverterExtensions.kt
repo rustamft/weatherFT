@@ -9,15 +9,15 @@ import com.rustamft.weatherft.domain.model.ApiKey
 import com.rustamft.weatherft.domain.model.City
 import com.rustamft.weatherft.domain.model.Weather
 
-fun ApiKey.convert(): ApiKeyData {
+internal fun ApiKey.convert(): ApiKeyData {
     return ApiKeyData(this.value)
 }
 
-fun ApiKeyData.convert(): ApiKey {
+internal fun ApiKeyData.convert(): ApiKey {
     return ApiKey(this.value)
 }
 
-fun City.convert(): CityData {
+internal fun City.convert(): CityData {
     val gson = Gson()
     val json = gson.toJson(this)
     val cityData = gson.fromJson(json, CityData::class.java)
@@ -25,7 +25,7 @@ fun City.convert(): CityData {
     return cityData
 }
 
-fun CityData.convert(): City {
+internal fun CityData.convert(): City {
     val gson = Gson()
     val json = gson.toJson(this)
     val city = gson.fromJson(json, City::class.java)
@@ -33,13 +33,13 @@ fun CityData.convert(): City {
     return city
 }
 
-fun Weather.convert(): WeatherData {
+internal fun Weather.convert(): WeatherData {
     val gson = Gson()
     val json = gson.toJson(this)
     return gson.fromJson(json, WeatherData::class.java)
 }
 
-fun WeatherData.convert(): Weather {
+internal fun WeatherData.convert(): Weather {
     val gson = Gson()
     val json = gson.toJson(this)
     return gson.fromJson(json, Weather::class.java)

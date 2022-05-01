@@ -1,6 +1,6 @@
 package com.rustamft.weatherft.data.model
 
-data class CityData(
+internal data class CityData(
     val name: String = "",
     var local_names: LocalNames = LocalNames(),
     val country: String = "",
