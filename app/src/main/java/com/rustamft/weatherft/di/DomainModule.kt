@@ -52,8 +52,9 @@ class DomainModule {
     @Provides
     fun provideUpdateWeatherUseCase(
         apiKeyRepository: ApiKeyRepository,
+        cityRepository: CityRepository,
         weatherRepository: WeatherRepository
     ): UpdateWeatherUseCase {
-        return UpdateWeatherUseCase(apiKeyRepository, weatherRepository)
+        return UpdateWeatherUseCase(apiKeyRepository, cityRepository, weatherRepository)
     }
 }

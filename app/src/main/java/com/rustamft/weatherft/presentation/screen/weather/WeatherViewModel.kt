@@ -8,7 +8,6 @@ import com.rustamft.weatherft.domain.usecase.GetCityUseCase
 import com.rustamft.weatherft.domain.usecase.GetWeatherUseCase
 import com.rustamft.weatherft.domain.usecase.UpdateWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,11 +24,7 @@ class WeatherViewModel @Inject constructor(
     fun updateWeather(scaffoldState: ScaffoldState) {
         viewModelScope.launch {
             runCatching {
-                updateWeatherUseCase.execute(
-                    cityFlow.first(),
-                    weatherFlow.first(),
-                    App.language
-                )
+                updateWeatherUseCase.execute(App.language)
             }.onFailure {
                 scaffoldState.snackbarHostState.showSnackbar(it.message.toString())
             }
