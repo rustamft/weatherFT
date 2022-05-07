@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.App
+import com.rustamft.weatherft.domain.model.AppPreferences
 import com.rustamft.weatherft.domain.util.PATTERN_DATE_TIME
 import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import com.rustamft.weatherft.domain.util.TimeProvider
@@ -39,8 +41,9 @@ import com.rustamft.weatherft.presentation.theme.FONT_SIZE_NORMAL
 @Composable
 fun WeatherScreen(
     navigator: DestinationsNavigator,
-    viewModel: WeatherViewModel = hiltViewModel(),
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState, // From DependenciesContainer.
+    appPreferencesState: State<AppPreferences>, // From DependenciesContainer.
+    viewModel: WeatherViewModel = hiltViewModel()
 ) {
 
     val city by viewModel.cityFlow.collectAsState(
@@ -77,11 +80,12 @@ fun WeatherScreen(
                 )
                 Spacer(modifier = Modifier.width(DIMEN_MEDIUM))
                 IconButtonElement(
+                    painter = painterResource(id = R.drawable.ic_settings),
+                    contentDescription = stringResource(R.string.change_city_settings),
+                    darkTheme = appPreferencesState.value.darkTheme,
                     onClick = {
                         navigator.navigate(LoginScreenDestination)
-                    },
-                    painter = painterResource(id = R.drawable.ic_settings),
-                    contentDescription = stringResource(R.string.change_city_settings)
+                    }
                 )
             }
             Text(

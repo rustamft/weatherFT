@@ -1,6 +1,5 @@
 package com.rustamft.weatherft.presentation.element
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
@@ -10,12 +9,13 @@ import com.rustamft.weatherft.presentation.theme.SkyBlue
 
 @Composable
 fun IconButtonElement(
-    onClick: () -> Unit,
     painter: Painter,
-    contentDescription: String
+    contentDescription: String,
+    darkTheme: Boolean,
+    onClick: () -> Unit
 ) {
 
-    val tint = if (isSystemInDarkTheme()) {
+    val tint = if (darkTheme) {
         EggshellPaper
     } else {
         SkyBlue

@@ -1,16 +1,25 @@
 <resources>
+    <string name="action_close">Close</string>
+    <string name="app_info">App info</string>
+    <string name="app_info_content">\n
+    This app is FOSS.\n
+    Source code is available at GitHub.\n
+    \n
+    App version:\u0020</string>
     <string name="app_name">weatherFT</string>
+    <string name="change_api_key">Change API key</string>
+    <string name="change_city_settings">Change the city and other settings</string>
+    <string name="city">City</string>
+    <string name="dark_theme">Dark theme</string>
     <string name="degrees_centigrade">°C</string>
     <string name="feels_like">Feels like</string>
-    <string name="updated_at">Updated:</string>
-    <string name="change_city_settings">Change the city and other settings</string>
     <string name="find_city">Find the city</string>
-    <string name="change_api_key">Change API key</string>
-    <string name="city">City</string>
+    <string name="language">Language</string>
+    <string name="meters_per_second">m/s</string>
     <string name="open_weather_api_key">Open Weather API key</string>
     <string name="save_api_key">Save API key</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="updated_at">Updated:</string>
     <string name="wind">Wind:</string>
-    <string name="meters_per_second">m/s</string>
 </resources>

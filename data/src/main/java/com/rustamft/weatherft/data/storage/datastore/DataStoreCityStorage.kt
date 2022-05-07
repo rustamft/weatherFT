@@ -2,13 +2,13 @@ package com.rustamft.weatherft.data.storage.datastore
 
 import androidx.datastore.core.DataStore
 import com.rustamft.weatherft.data.model.CityData
-import com.rustamft.weatherft.data.model.StoredPreferences
+import com.rustamft.weatherft.data.model.DataContainer
 import com.rustamft.weatherft.data.storage.CityStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
 internal class DataStoreCityStorage(
-    private val dataStore: DataStore<StoredPreferences>
+    private val dataStore: DataStore<DataContainer>
 ) : CityStorage {
 
     override suspend fun save(cityData: CityData) {

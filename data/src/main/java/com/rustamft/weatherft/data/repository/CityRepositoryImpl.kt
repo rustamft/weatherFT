@@ -17,7 +17,7 @@ internal class CityRepositoryImpl(
 
     override suspend fun saveCity(city: City) {
         withContext(Dispatchers.IO) {
-            cityStorage.save(city.convert())
+            cityStorage.save(cityData = city.convert())
         }
     }
 
@@ -29,7 +29,7 @@ internal class CityRepositoryImpl(
 
     override suspend fun searchCity(city: City, apiKey: ApiKey): List<City> {
         return withContext(Dispatchers.IO) {
-            val listOfCityData = api.searchCity(city.name, apiKey.value)
+            val listOfCityData = api.searchCity(cityName = city.name, apiKey = apiKey.value)
             listOfCityData.map { it.convert() }
         }
     }

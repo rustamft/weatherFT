@@ -4,20 +4,24 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import com.rustamft.weatherft.data.model.StoredPreferences
+import com.rustamft.weatherft.data.model.DataContainer
 import com.rustamft.weatherft.data.repository.ApiKeyRepositoryImpl
+import com.rustamft.weatherft.data.repository.AppPreferencesRepositoryImpl
 import com.rustamft.weatherft.data.repository.CityRepositoryImpl
 import com.rustamft.weatherft.data.repository.WeatherRepositoryImpl
 import com.rustamft.weatherft.data.storage.ApiKeyStorage
-import com.rustamft.weatherft.data.storage.ExternalApi
+import com.rustamft.weatherft.data.storage.AppPreferencesStorage
 import com.rustamft.weatherft.data.storage.CityStorage
+import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.data.storage.WeatherStorage
 import com.rustamft.weatherft.data.storage.api.OpenWeatherApi
 import com.rustamft.weatherft.data.storage.api.OpenWeatherApiWrapper
 import com.rustamft.weatherft.data.storage.datastore.DataStoreApiKeyStorage
+import com.rustamft.weatherft.data.storage.datastore.DataStoreAppPreferencesStorage
 import com.rustamft.weatherft.data.storage.datastore.DataStoreCityStorage
 import com.rustamft.weatherft.data.storage.datastore.DataStoreWeatherStorage
 import com.rustamft.weatherft.domain.repository.ApiKeyRepository
+import com.rustamft.weatherft.domain.repository.AppPreferencesRepository
 import com.rustamft.weatherft.domain.repository.CityRepository
 import com.rustamft.weatherft.domain.repository.WeatherRepository
 import com.rustamft.weatherft.domain.util.STORED_PREFERENCES
@@ -39,9 +43,9 @@ internal class DataModule {
 
     @Provides
     @Singleton
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<StoredPreferences> {
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<DataContainer> {
         return DataStoreFactory.create(
-            serializer = StoredPreferences.Serializer,
+            serializer = DataContainer.Serializer,
             produceFile = { context.dataStoreFile(STORED_PREFERENCES) },
             corruptionHandler = null,
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -50,7 +54,19 @@ internal class DataModule {
 
     @Provides
     @Singleton
-    fun provideApiKeyStorage(dataStore: DataStore<StoredPreferences>): ApiKeyStorage {
+    fun provideAppPreferencesStorage(dataStore: DataStore<DataContainer>): AppPreferencesStorage {
+        return DataStoreAppPreferencesStorage(dataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppPreferencesRepository(appPreferencesStorage: AppPreferencesStorage): AppPreferencesRepository {
+        return AppPreferencesRepositoryImpl(appPreferencesStorage)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiKeyStorage(dataStore: DataStore<DataContainer>): ApiKeyStorage {
         return DataStoreApiKeyStorage(dataStore)
     }
 
@@ -78,7 +94,7 @@ internal class DataModule {
 
     @Provides
     @Singleton
-    fun provideCityStorage(dataStore: DataStore<StoredPreferences>): CityStorage {
+    fun provideCityStorage(dataStore: DataStore<DataContainer>): CityStorage {
         return DataStoreCityStorage(dataStore)
     }
 
@@ -90,13 +106,16 @@ internal class DataModule {
 
     @Provides
     @Singleton
-    fun provideWeatherStorage(dataStore: DataStore<StoredPreferences>): WeatherStorage {
+    fun provideWeatherStorage(dataStore: DataStore<DataContainer>): WeatherStorage {
         return DataStoreWeatherStorage(dataStore)
     }
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(weatherStorage: WeatherStorage, apiWrapper: ExternalApi): WeatherRepository {
+    fun provideWeatherRepository(
+        weatherStorage: WeatherStorage,
+        apiWrapper: ExternalApi
+    ): WeatherRepository {
         return WeatherRepositoryImpl(weatherStorage, apiWrapper)
     }
 }

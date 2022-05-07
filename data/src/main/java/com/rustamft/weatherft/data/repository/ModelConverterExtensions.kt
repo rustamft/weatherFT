@@ -3,18 +3,28 @@ package com.rustamft.weatherft.data.repository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rustamft.weatherft.data.model.ApiKeyData
+import com.rustamft.weatherft.data.model.AppPreferencesData
 import com.rustamft.weatherft.data.model.CityData
 import com.rustamft.weatherft.data.model.WeatherData
 import com.rustamft.weatherft.domain.model.ApiKey
+import com.rustamft.weatherft.domain.model.AppPreferences
 import com.rustamft.weatherft.domain.model.City
 import com.rustamft.weatherft.domain.model.Weather
 
+internal fun AppPreferences.convert(): AppPreferencesData {
+    return AppPreferencesData(darkTheme = this.darkTheme)
+}
+
+internal fun AppPreferencesData.convert(): AppPreferences {
+    return AppPreferences(darkTheme = this.darkTheme)
+}
+
 internal fun ApiKey.convert(): ApiKeyData {
-    return ApiKeyData(this.value)
+    return ApiKeyData(value = this.value)
 }
 
 internal fun ApiKeyData.convert(): ApiKey {
-    return ApiKey(this.value)
+    return ApiKey(value = this.value)
 }
 
 internal fun City.convert(): CityData {

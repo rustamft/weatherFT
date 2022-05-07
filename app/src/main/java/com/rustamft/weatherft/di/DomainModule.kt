@@ -1,12 +1,15 @@
 package com.rustamft.weatherft.di
 
 import com.rustamft.weatherft.domain.repository.ApiKeyRepository
+import com.rustamft.weatherft.domain.repository.AppPreferencesRepository
 import com.rustamft.weatherft.domain.repository.CityRepository
 import com.rustamft.weatherft.domain.repository.WeatherRepository
 import com.rustamft.weatherft.domain.usecase.GetApiKeyUseCase
+import com.rustamft.weatherft.domain.usecase.GetAppPreferencesUseCase
 import com.rustamft.weatherft.domain.usecase.GetCityUseCase
 import com.rustamft.weatherft.domain.usecase.GetWeatherUseCase
 import com.rustamft.weatherft.domain.usecase.SaveApiKeyUseCase
+import com.rustamft.weatherft.domain.usecase.SaveAppPreferencesUseCase
 import com.rustamft.weatherft.domain.usecase.SaveCityUseCase
 import com.rustamft.weatherft.domain.usecase.SearchCityUseCase
 import com.rustamft.weatherft.domain.usecase.UpdateWeatherUseCase
@@ -25,6 +28,13 @@ class DomainModule {
     }
 
     @Provides
+    fun provideGetAppPreferencesUseCase(
+        appPreferencesRepository: AppPreferencesRepository
+    ): GetAppPreferencesUseCase {
+        return GetAppPreferencesUseCase(appPreferencesRepository)
+    }
+
+    @Provides
     fun provideGetCityUseCase(cityRepository: CityRepository): GetCityUseCase {
         return GetCityUseCase(cityRepository)
     }
@@ -37,6 +47,13 @@ class DomainModule {
     @Provides
     fun provideSaveApiKeyUseCase(apiKeyRepository: ApiKeyRepository): SaveApiKeyUseCase {
         return SaveApiKeyUseCase(apiKeyRepository)
+    }
+
+    @Provides
+    fun provideSaveAppPreferencesUseCase(
+        appPreferencesRepository: AppPreferencesRepository
+    ): SaveAppPreferencesUseCase {
+        return SaveAppPreferencesUseCase(appPreferencesRepository)
     }
 
     @Provides

@@ -2,6 +2,8 @@ package com.rustamft.weatherft.domain.util
 
 const val STORED_PREFERENCES = "stored_preferences.json"
 
+const val GITHUB_LINK = "https://github.com/rustamft/weatherFT"
+
 const val ROUTE_LOGIN = "login_screen"
 const val ROUTE_WEATHER = "weather_screen"
 const val ROUTE_FORECAST = "forecast_screen"
