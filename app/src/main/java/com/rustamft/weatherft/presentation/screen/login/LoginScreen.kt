@@ -46,7 +46,6 @@ internal fun LoginScreen(
         SwitchElement(
             name = stringResource(R.string.dark_theme),
             isChecked = appPreferencesState.value.darkTheme,
-            darkTheme = appPreferencesState.value.darkTheme,
             onCheckedChange = {
                 loginViewModel.saveAppPreferences(
                     appPreferences = AppPreferences(darkTheme = it)
@@ -85,7 +84,6 @@ internal fun LoginScreen(
             IconButtonElement(
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = stringResource(R.string.find_city),
-                darkTheme = appPreferencesState.value.darkTheme,
                 onClick = {
                     loginViewModel.updateListOfCities(scaffoldState)
                 }

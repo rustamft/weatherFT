@@ -4,31 +4,44 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.rustamft.weatherft.domain.util.ROUTE_LOGIN
+import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 
 @Composable
 fun BottomNavBar(
     navController: NavHostController,
     items: List<BottomNavItem>,
-    onItemClick: (BottomNavItem) -> Unit
+    hideForRoutes: List<String> = emptyList()
 ) {
 
     val backStackEntry = navController.currentBackStackEntryAsState()
 
-    if (backStackEntry.value?.destination?.route != ROUTE_LOGIN) {
+    if (!hideForRoutes.contains(backStackEntry.value?.destination?.route)) {
         BottomNavigation(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            elevation = DIMEN_MEDIUM,
+            backgroundColor = MaterialTheme.colors.background,
+            contentColor = MaterialTheme.colors.primary
         ) {
             items.forEach { item ->
                 val selected = item.route == backStackEntry.value?.destination?.route
                 BottomNavigationItem(
                     selected = selected,
-                    onClick = { onItemClick(item) },
-                    icon = { Icon(imageVector = item.icon, contentDescription = item.name) }
+                    onClick = {
+                        if (!selected) {
+                            navController.navigate(item.route)
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.name
+                        )
+                    }
                 )
             }
         }

@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
 import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
+import com.rustamft.weatherft.domain.util.ROUTE_LOGIN
 import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import com.rustamft.weatherft.presentation.navigation.BottomNavBar
 import com.rustamft.weatherft.presentation.navigation.BottomNavItem
@@ -42,7 +43,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     scaffoldState = scaffoldState,
                     topBar = {
-                        TopBar(darkTheme = appPreferencesState.value.darkTheme)
+                        TopBar(
+                            navController = navController,
+                            shrinkForRoutes = listOf(ROUTE_LOGIN)
+                        )
                     },
                     bottomBar = {
                         BottomNavBar(
@@ -59,7 +63,7 @@ class MainActivity : ComponentActivity() {
                                     Icons.Default.List
                                 )
                             ),
-                            onItemClick = { navController.navigate(it.route) }
+                            hideForRoutes = listOf(ROUTE_LOGIN)
                         )
                     }
                 ) {

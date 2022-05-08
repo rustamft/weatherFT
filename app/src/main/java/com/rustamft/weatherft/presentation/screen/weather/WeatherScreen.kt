@@ -3,21 +3,15 @@ package com.rustamft.weatherft.presentation.screen.weather
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,14 +20,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.App
-import com.rustamft.weatherft.domain.model.AppPreferences
 import com.rustamft.weatherft.domain.util.PATTERN_DATE_TIME
 import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
-import com.rustamft.weatherft.presentation.element.IconButtonElement
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
-import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_BIG
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_NORMAL
 
@@ -42,7 +33,6 @@ import com.rustamft.weatherft.presentation.theme.FONT_SIZE_NORMAL
 fun WeatherScreen(
     navigator: DestinationsNavigator,
     scaffoldState: ScaffoldState, // From DependenciesContainer.
-    appPreferencesState: State<AppPreferences>, // From DependenciesContainer.
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
 
@@ -69,25 +59,10 @@ fun WeatherScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(contentAlignment = Alignment.TopCenter) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = city.localNames[App.language] ?: city.name,
-                    fontSize = FONT_SIZE_NORMAL
-                )
-                Spacer(modifier = Modifier.width(DIMEN_MEDIUM))
-                IconButtonElement(
-                    painter = painterResource(id = R.drawable.ic_settings),
-                    contentDescription = stringResource(R.string.change_city_settings),
-                    darkTheme = appPreferencesState.value.darkTheme,
-                    onClick = {
-                        navigator.navigate(LoginScreenDestination)
-                    }
-                )
-            }
+            Text(
+                text = city.localNames[App.language] ?: city.name,
+                fontSize = FONT_SIZE_NORMAL
+            )
             Text(
                 text = "${stringResource(R.string.updated_at)} ${
                     TimeProvider.millisToString(

@@ -6,19 +6,22 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.rustamft.weatherft.presentation.activity.MainViewModel
 
 private val DarkColorPalette = darkColors(
-    primary = EggshellPaper,
+    primary = UnbleachedSilk,
     background = Black,
-    onSurface = EggshellPaper
+    onBackground = White,
+    onSurface = UnbleachedSilk
 )
 
 private val LightColorPalette = lightColors(
     primary = SkyBlue,
-    surface = SkyBlue
+    background = White,
+    onBackground = Black,
+    onSurface = SkyBlue
 
     /* Other default colors to override
+    primary = Teal200,
     primaryVariant = Teal200,
     secondary = Teal200,
     background = Color.White,

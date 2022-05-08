@@ -52,7 +52,8 @@ fun ForecastScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(DIMEN_MEDIUM)
+                    .padding(DIMEN_MEDIUM),
+                elevation = DIMEN_MEDIUM
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Row(
