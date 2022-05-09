@@ -27,7 +27,7 @@ android {
         minSdk 21
         targetSdk 32
         versionCode 1
-        versionName "0.7.1"
+        versionName "0.7.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -59,6 +59,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.rustamft.weatherft'
 }
 
 dependencies {
@@ -82,8 +83,8 @@ dependencies {
     // Accompanist.
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha'
     // Compose destinations.
-    implementation 'io.github.raamcosta.compose-destinations:core:1.5.1-beta'
-    ksp 'io.github.raamcosta.compose-destinations:ksp:1.5.1-beta'
+    implementation 'io.github.raamcosta.compose-destinations:core:1.5.3-beta'
+    ksp 'io.github.raamcosta.compose-destinations:ksp:1.5.3-beta'
     // Retrofit.
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'

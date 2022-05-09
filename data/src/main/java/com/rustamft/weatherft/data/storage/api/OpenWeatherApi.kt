@@ -16,7 +16,7 @@ internal interface OpenWeatherApi {
         @Query("appid") apiKey: String,
     ): Response<ArrayList<CityData>>
 
-    // https://api.openweathermap.org/data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,hourly,alerts&appid=
+    // https://api.openweathermap.org/data/2.5/onecall?lat=56.84&lon=60.64&exclude=minutely,alerts&appid=
     @GET("/data/2.5/onecall")
     suspend fun getWeather(
         @Query("lat") lat: Double,

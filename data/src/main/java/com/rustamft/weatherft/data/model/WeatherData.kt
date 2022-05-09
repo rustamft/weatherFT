@@ -3,6 +3,7 @@ package com.rustamft.weatherft.data.model
 internal data class WeatherData(
     val current: Current = Current(),
     val daily: List<Daily> = listOf(Daily()),
+    val hourly: List<Hourly> = listOf(Hourly()),
     val lat: Double = 0.0,
     val lon: Double = 0.0,
     val timezone: String = "",
@@ -49,6 +50,25 @@ internal data class WeatherData(
         val wind_speed: Double = 0.0
     )
 
+    data class Hourly(
+        val dt: Int = 0,
+        val temp: Double = 0.0,
+        val feels_like: Double = 0.0,
+        val weather: List<Description> = listOf(Description()),
+        val clouds: Int = 0,
+        val dew_point: Double = 0.0,
+        val humidity: Int = 0,
+        val pop: Double = 0.0,
+        val pressure: Int = 0,
+        val rain: Rain = Rain(),
+        val snow: Snow = Snow(),
+        val uvi: Double = 0.0,
+        val visibility: Int = 0,
+        val wind_deg: Int = 0,
+        val wind_gust: Double = 0.0,
+        val wind_speed: Double = 0.0
+    )
+
     data class Description(
         val id: Int = 0,
         val main: String = "",
@@ -70,5 +90,13 @@ internal data class WeatherData(
         val eve: Double = 0.0,
         val morn: Double = 0.0,
         val night: Double = 0.0,
+    )
+
+    data class Rain(
+        val `1h`: Double = 0.0
+    )
+
+    data class Snow(
+        val `1h`: Double = 0.0
     )
 }

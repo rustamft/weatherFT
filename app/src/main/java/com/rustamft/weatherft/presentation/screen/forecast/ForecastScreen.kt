@@ -32,7 +32,12 @@ fun ForecastScreen(
     viewModel: ForecastViewModel = hiltViewModel()
 ) {
 
-    val weather by viewModel.weatherFlow.collectAsState(initial = com.rustamft.weatherft.domain.model.Weather())
+    val degrees = stringResource(id = R.string.degrees_centigrade)
+    val speedUnits = stringResource(id = R.string.meters_per_second)
+
+    val weather by viewModel.weatherFlow.collectAsState(
+        initial = com.rustamft.weatherft.domain.model.Weather()
+    )
 
     LazyColumn(
         modifier = Modifier.padding(DIMEN_MEDIUM),
@@ -45,7 +50,6 @@ fun ForecastScreen(
                 1 -> stringResource(R.string.tomorrow)
                 else -> TimeProvider.millisToString(daily.dt * 1000L, PATTERN_DATE)
             }
-            val degrees = stringResource(R.string.degrees_centigrade)
 
             Text(text = time, fontSize = FONT_SIZE_SMALL)
 
@@ -55,14 +59,31 @@ fun ForecastScreen(
                     .padding(DIMEN_MEDIUM),
                 elevation = DIMEN_MEDIUM
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier.padding(DIMEN_MEDIUM),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Column {
-                            Text(text = "${daily.temp.max}$degrees (${daily.temp.min}$degrees)")
+                        Column(horizontalAlignment = Alignment.Start) {
+                            Text(
+                                text = "${stringResource(id = R.string.max)} ${
+                                    daily.temp.max
+                                }$degrees"
+                            )
+                            Text(
+                                text = "${stringResource(id = R.string.min)} ${
+                                    daily.temp.min
+                                }$degrees"
+                            )
+                            Text(
+                                text = "${stringResource(id = R.string.wind)} ${
+                                    daily.wind_speed
+                                } $speedUnits"
+                            )
                         }
                         Text(text = daily.weather[0].description)
                     }

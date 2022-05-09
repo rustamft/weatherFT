@@ -9,6 +9,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = UnbleachedSilk,
+    secondary = CoarseWool,
     background = Black,
     onBackground = White,
     onSurface = UnbleachedSilk
@@ -16,6 +17,7 @@ private val DarkColorPalette = darkColors(
 
 private val LightColorPalette = lightColors(
     primary = SkyBlue,
+    secondary = IndigoWhite,
     background = White,
     onBackground = Black,
     onSurface = SkyBlue
