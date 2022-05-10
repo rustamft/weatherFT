@@ -9,7 +9,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = UnbleachedSilk,
-    secondary = CoarseWool,
+    secondary = IndigoSeaweedBrown,
     background = Black,
     onBackground = White,
     onSurface = UnbleachedSilk

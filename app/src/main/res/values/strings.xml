@@ -18,7 +18,11 @@
     <string name="max">Max.:</string>
     <string name="meters_per_second">m/s</string>
     <string name="min">Min.:</string>
+    <string name="open_weather_api_info">Open Weather API info</string>
+    <string name="open_weather_api_info_content">To use this app you need an Open Weather API key,
+        to get it you may wish to visit Open Weather Map site.</string>
     <string name="open_weather_api_key">Open Weather API key</string>
+    <string name="open_weather_map_site">Open Weather Map site</string>
     <string name="save_api_key">Save API key</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>

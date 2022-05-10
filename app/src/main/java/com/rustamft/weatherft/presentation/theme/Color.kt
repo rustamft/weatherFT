@@ -7,5 +7,5 @@ val Black = Color(0xFF171412)
 
 val UnbleachedSilk = Color(0xFFFFDDCA)
 val SkyBlue = Color(0xFF4D8FAC)
-val CoarseWool = Color(0xFF181B26)
+val IndigoSeaweedBrown = Color(0xFF2E372E)
 val IndigoWhite = Color(0xFFEBF6F7)
