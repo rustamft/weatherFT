@@ -73,7 +73,7 @@ data class Weather(
         val id: Int = 0,
         val main: String = "",
         val description: String = "",
-        val icon: String = ""
+        val icon: String = "01d"
     )
 
     data class FeelsLike(

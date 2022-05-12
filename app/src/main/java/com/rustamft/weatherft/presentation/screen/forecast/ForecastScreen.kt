@@ -23,8 +23,9 @@ import com.rustamft.weatherft.R
 import com.rustamft.weatherft.domain.util.PATTERN_DATE
 import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
 import com.rustamft.weatherft.domain.util.TimeProvider
-import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_SMALL
+import com.rustamft.weatherft.presentation.theme.Shapes
 
 @Destination(route = ROUTE_FORECAST)
 @Composable
@@ -40,7 +41,7 @@ fun ForecastScreen(
     )
 
     LazyColumn(
-        modifier = Modifier.padding(DIMEN_MEDIUM),
+        modifier = Modifier.padding(DIMEN_SMALL),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         itemsIndexed(weather.daily) { index: Int, daily: com.rustamft.weatherft.domain.model.Weather.Daily ->
@@ -56,11 +57,12 @@ fun ForecastScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(DIMEN_MEDIUM),
-                elevation = DIMEN_MEDIUM
+                    .padding(DIMEN_SMALL),
+                elevation = DIMEN_SMALL,
+                shape = Shapes.large
             ) {
                 Column(
-                    modifier = Modifier.padding(DIMEN_MEDIUM),
+                    modifier = Modifier.padding(DIMEN_SMALL),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(
@@ -89,7 +91,7 @@ fun ForecastScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
+            Spacer(modifier = Modifier.height(DIMEN_SMALL))
         }
     }
 }

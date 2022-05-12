@@ -23,7 +23,7 @@ import com.rustamft.weatherft.presentation.navigation.BottomNavItem
 import com.rustamft.weatherft.presentation.navigation.TopBar
 import com.rustamft.weatherft.presentation.screen.NavGraphs
 import com.rustamft.weatherft.presentation.theme.AppTheme
-import com.rustamft.weatherft.presentation.theme.DIMEN_BIG
+import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     DestinationsNavHost(
-                        modifier = Modifier.padding(bottom = DIMEN_BIG),
+                        modifier = Modifier.padding(bottom = DIMEN_MEDIUM),
                         navGraph = NavGraphs.root,
                         navController = navController,
                         dependenciesContainerBuilder = {

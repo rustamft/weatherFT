@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 
 @Composable
 fun BottomNavBar(
@@ -23,7 +23,7 @@ fun BottomNavBar(
     if (!hideForRoutes.contains(backStackEntry.value?.destination?.route)) {
         BottomNavigation(
             modifier = Modifier.fillMaxWidth(),
-            elevation = DIMEN_MEDIUM,
+            elevation = DIMEN_SMALL,
             backgroundColor = MaterialTheme.colors.background,
             contentColor = MaterialTheme.colors.primary
         ) {

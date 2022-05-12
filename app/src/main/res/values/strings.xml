@@ -24,8 +24,18 @@
     <string name="open_weather_api_key">Open Weather API key</string>
     <string name="open_weather_map_site">Open Weather Map site</string>
     <string name="save_api_key">Save API key</string>
+    <string name="sunrise">Sunrise:</string>
+    <string name="sunset">Sunset:</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="updated_at">Updated:</string>
     <string name="wind">Wind:</string>
+    <string name="wind_east">east</string>
+    <string name="wind_north">north</string>
+    <string name="wind_northeast">northeast</string>
+    <string name="wind_northwest">northwest</string>
+    <string name="wind_south">south</string>
+    <string name="wind_southeast">southeast</string>
+    <string name="wind_southwest">southwest</string>
+    <string name="wind_west">west</string>
 </resources>

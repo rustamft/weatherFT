@@ -40,7 +40,7 @@ import com.rustamft.weatherft.presentation.element.SwitchElement
 import com.rustamft.weatherft.presentation.element.TextButtonElement
 import com.rustamft.weatherft.presentation.element.TextFieldElement
 import com.rustamft.weatherft.presentation.screen.destinations.WeatherScreenDestination
-import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 
 @Destination(route = ROUTE_LOGIN)
 @Composable
@@ -159,13 +159,13 @@ internal fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PreferencesElementsSet()
-        Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
+        Spacer(modifier = Modifier.height(DIMEN_SMALL))
         ApiElementsSet()
         if (loginViewModel.apiKey.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
+            Spacer(modifier = Modifier.height(DIMEN_SMALL))
             CityElementsSet()
         }
-        Spacer(modifier = Modifier.height(DIMEN_MEDIUM))
+        Spacer(modifier = Modifier.height(DIMEN_SMALL))
         ListOfCitiesElementsSet()
     }
 }

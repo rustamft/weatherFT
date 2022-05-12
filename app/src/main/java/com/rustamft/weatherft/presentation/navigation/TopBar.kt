@@ -23,7 +23,7 @@ import com.rustamft.weatherft.domain.util.GITHUB_LINK
 import com.rustamft.weatherft.domain.util.ROUTE_LOGIN
 import com.rustamft.weatherft.presentation.element.IconButtonElement
 import com.rustamft.weatherft.presentation.element.TextButtonElement
-import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 
 @Composable
 fun TopBar(
@@ -38,7 +38,7 @@ fun TopBar(
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
         modifier = Modifier.fillMaxWidth(),
-        elevation = DIMEN_MEDIUM,
+        elevation = DIMEN_SMALL,
         actions = {
             if (!shrinkForRoutes.contains(backStackEntry.value?.destination?.route)) {
                 IconButtonElement(

@@ -1,12 +1,15 @@
 package com.rustamft.weatherft.presentation.screen.weather
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,8 +22,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -34,9 +39,13 @@ import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
+import com.rustamft.weatherft.presentation.theme.DIMEN_BIG
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
+import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_BIG
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_NORMAL
+import com.rustamft.weatherft.presentation.theme.Shapes
+import kotlin.math.roundToInt
 
 @Destination(start = true, route = ROUTE_WEATHER)
 @Composable
@@ -46,6 +55,7 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
     val degrees = stringResource(R.string.degrees_centigrade)
 
     val city by viewModel.cityFlow.collectAsState(
@@ -70,61 +80,116 @@ fun WeatherScreen(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(contentAlignment = Alignment.TopCenter) {
-            Text(
-                text = city.localNames[App.language] ?: city.name,
-                fontSize = FONT_SIZE_NORMAL
-            )
-            Text(
-                text = "${stringResource(R.string.updated_at)} ${
-                    TimeProvider.millisToString(
-                        weather.current.dt * 1000L,
-                        PATTERN_DATE_TIME
-                    )
-                }",
-                modifier = Modifier.offset(0.dp, 40.dp)
-            )
+        Box {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = city.localNames[App.language] ?: city.name,
+                    fontSize = FONT_SIZE_NORMAL
+                )
+                Text(
+                    text = "${stringResource(R.string.updated_at)} ${
+                        TimeProvider.millisToString(
+                            weather.current.dt * 1000L,
+                            PATTERN_DATE_TIME
+                        )
+                    }"
+                )
+            }
         }
-        Box(contentAlignment = Alignment.TopCenter) {
-            Text(
-                text = "${weather.current.temp}$degrees",
-                fontSize = FONT_SIZE_BIG
-            )
-            Text(
-                text = "${stringResource(R.string.feels_like)} ${weather.current.feels_like}$degrees",
-                modifier = Modifier.offset(0.dp, 60.dp)
-            )
+        Box {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "${weather.current.temp}$degrees",
+                    fontSize = FONT_SIZE_BIG
+                )
+                Text(
+                    text = "${stringResource(R.string.feels_like)} ${weather.current.feels_like}$degrees"
+                )
+            }
         }
-        Text(
-            text = weather.current.weather[0].description,
-            fontSize = FONT_SIZE_NORMAL
+        Image(
+            modifier = Modifier.size(DIMEN_BIG),
+            painter = painterResource(
+                id = context.resources.getIdentifier(
+                    "weather_${weather.current.weather[0].icon}",
+                    "drawable",
+                    context.packageName
+                )
+            ),
+            contentDescription = weather.current.weather[0].description,
+            contentScale = ContentScale.FillBounds
         )
-        Text(
-            text = "${stringResource(R.string.wind)} ${weather.current.wind_speed} ${
-                stringResource(R.string.meters_per_second)
-            }"
-        )
+        Box {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "${stringResource(R.string.wind)} ${
+                        weather.current.wind_speed
+                    } ${stringResource(R.string.meters_per_second)} (${
+                        with(weather.current.wind_deg) {
+                            val directions = listOf(
+                                stringResource(id = R.string.wind_north),
+                                stringResource(id = R.string.wind_northeast),
+                                stringResource(id = R.string.wind_east),
+                                stringResource(id = R.string.wind_southeast),
+                                stringResource(id = R.string.wind_south),
+                                stringResource(id = R.string.wind_southwest),
+                                stringResource(id = R.string.wind_west),
+                                stringResource(id = R.string.wind_northwest)
+                            )
+                            var count = (this * 8 / 360f).roundToInt()
+                            count = (count + 8) % 8
+                            directions[count]
+                        }
+                    })",
+                )
+                Text(
+                    text = "${stringResource(id = R.string.sunrise)} ${
+                        TimeProvider.millisToString(
+                            weather.current.sunrise * 1000L, PATTERN_TIME
+                        )
+                    }"
+                )
+                Text(
+                    text = "${stringResource(id = R.string.sunset)} ${
+                        TimeProvider.millisToString(
+                            weather.current.sunset * 1000L, PATTERN_TIME
+                        )
+                    }"
+                )
+            }
+        }
         LazyRow(modifier = Modifier.background(MaterialTheme.colors.secondary)) {
-            itemsIndexed(weather.hourly.take(24)) { index: Int, hourly: Weather.Hourly ->
-                if (index < 24) {
-                    Column(
-                        modifier = Modifier.padding(DIMEN_MEDIUM),
-                        horizontalAlignment = Alignment.CenterHorizontally
+            itemsIndexed(weather.hourly.take(12)) { _: Int, hourly: Weather.Hourly ->
+                Column(
+                    modifier = Modifier.padding(DIMEN_SMALL),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = TimeProvider.millisToString(hourly.dt * 1000L, PATTERN_TIME))
+                    Card(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(DIMEN_SMALL),
+                        elevation = DIMEN_SMALL,
+                        shape = Shapes.large
                     ) {
-                        Text(text = TimeProvider.millisToString(hourly.dt * 1000L, PATTERN_TIME))
-                        Card(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(DIMEN_MEDIUM),
-                            elevation = DIMEN_MEDIUM
+                        Column(
+                            modifier = Modifier.padding(DIMEN_SMALL),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(
-                                modifier = Modifier.padding(DIMEN_MEDIUM),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(text = "${hourly.temp}$degrees")
-                                Text(text = hourly.weather[0].description)
-                            }
+                            Text(text = "${hourly.temp}$degrees")
+                            Spacer(modifier = Modifier.height(DIMEN_SMALL))
+                            Image(
+                                modifier = Modifier.size(DIMEN_MEDIUM),
+                                painter = painterResource(
+                                    id = context.resources.getIdentifier(
+                                        "weather_${hourly.weather[0].icon}",
+                                        "drawable",
+                                        context.packageName
+                                    )
+                                ),
+                                contentDescription = hourly.weather[0].description,
+                                contentScale = ContentScale.FillBounds
+                            )
                         }
                     }
                 }
