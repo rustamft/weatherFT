@@ -1,6 +1,5 @@
 package com.rustamft.weatherft.presentation.screen.weather
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -22,9 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -38,6 +33,7 @@ import com.rustamft.weatherft.domain.util.PATTERN_TIME
 import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
+import com.rustamft.weatherft.presentation.element.WeatherIconElement
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
 import com.rustamft.weatherft.presentation.theme.DIMEN_BIG
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
@@ -55,7 +51,6 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
 
-    val context = LocalContext.current
     val degrees = stringResource(R.string.degrees_centigrade)
 
     val city by viewModel.cityFlow.collectAsState(
@@ -96,6 +91,11 @@ fun WeatherScreen(
                 )
             }
         }
+        WeatherIconElement(
+            iconCode = weather.current.weather[0].icon,
+            iconDescription = weather.current.weather[0].description,
+            iconSize = DIMEN_BIG
+        )
         Box {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
@@ -107,24 +107,12 @@ fun WeatherScreen(
                 )
             }
         }
-        Image(
-            modifier = Modifier.size(DIMEN_BIG),
-            painter = painterResource(
-                id = context.resources.getIdentifier(
-                    "weather_${weather.current.weather[0].icon}",
-                    "drawable",
-                    context.packageName
-                )
-            ),
-            contentDescription = weather.current.weather[0].description,
-            contentScale = ContentScale.FillBounds
-        )
         Box {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "${stringResource(R.string.wind)} ${
                         weather.current.wind_speed
-                    } ${stringResource(R.string.meters_per_second)} (${
+                    } ${stringResource(R.string.meters_per_second)} ${
                         with(weather.current.wind_deg) {
                             val directions = listOf(
                                 stringResource(id = R.string.wind_north),
@@ -140,7 +128,7 @@ fun WeatherScreen(
                             count = (count + 8) % 8
                             directions[count]
                         }
-                    })",
+                    }",
                 )
                 Text(
                     text = "${stringResource(id = R.string.sunrise)} ${
@@ -159,7 +147,7 @@ fun WeatherScreen(
             }
         }
         LazyRow(modifier = Modifier.background(MaterialTheme.colors.secondary)) {
-            itemsIndexed(weather.hourly.take(12)) { _: Int, hourly: Weather.Hourly ->
+            itemsIndexed(weather.hourly.take(13)) { _: Int, hourly: Weather.Hourly ->
                 Column(
                     modifier = Modifier.padding(DIMEN_SMALL),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -176,20 +164,30 @@ fun WeatherScreen(
                             modifier = Modifier.padding(DIMEN_SMALL),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "${hourly.temp}$degrees")
-                            Spacer(modifier = Modifier.height(DIMEN_SMALL))
-                            Image(
-                                modifier = Modifier.size(DIMEN_MEDIUM),
-                                painter = painterResource(
-                                    id = context.resources.getIdentifier(
-                                        "weather_${hourly.weather[0].icon}",
-                                        "drawable",
-                                        context.packageName
-                                    )
-                                ),
-                                contentDescription = hourly.weather[0].description,
-                                contentScale = ContentScale.FillBounds
+                            WeatherIconElement(
+                                iconCode = hourly.weather[0].icon,
+                                iconDescription = hourly.weather[0].description,
+                                iconSize = DIMEN_MEDIUM
                             )
+                            Spacer(modifier = Modifier.height(DIMEN_SMALL))
+                            Text(text = "${hourly.temp}$degrees")
+                            Text(text = "${hourly.wind_speed} ${stringResource(R.string.meters_per_second)} ${
+                                with(hourly.wind_deg) {
+                                    val directions = listOf(
+                                        stringResource(id = R.string.wind_north),
+                                        stringResource(id = R.string.wind_northeast),
+                                        stringResource(id = R.string.wind_east),
+                                        stringResource(id = R.string.wind_southeast),
+                                        stringResource(id = R.string.wind_south),
+                                        stringResource(id = R.string.wind_southwest),
+                                        stringResource(id = R.string.wind_west),
+                                        stringResource(id = R.string.wind_northwest)
+                                    )
+                                    var count = (this * 8 / 360f).roundToInt()
+                                    count = (count + 8) % 8
+                                    directions[count]
+                                }
+                            }")
                         }
                     }
                 }

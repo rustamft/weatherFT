@@ -23,9 +23,12 @@ import com.rustamft.weatherft.R
 import com.rustamft.weatherft.domain.util.PATTERN_DATE
 import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
 import com.rustamft.weatherft.domain.util.TimeProvider
+import com.rustamft.weatherft.presentation.element.WeatherIconElement
+import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 import com.rustamft.weatherft.presentation.theme.FONT_SIZE_SMALL
 import com.rustamft.weatherft.presentation.theme.Shapes
+import kotlin.math.roundToInt
 
 @Destination(route = ROUTE_FORECAST)
 @Composable
@@ -68,26 +71,46 @@ fun ForecastScreen(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Column(horizontalAlignment = Alignment.Start) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "${stringResource(id = R.string.max)} ${
+                                text = "${stringResource(id = R.string.temperature_max)} ${
                                     daily.temp.max
                                 }$degrees"
                             )
                             Text(
-                                text = "${stringResource(id = R.string.min)} ${
+                                text = "${stringResource(id = R.string.temperature_min)} ${
                                     daily.temp.min
                                 }$degrees"
                             )
                             Text(
                                 text = "${stringResource(id = R.string.wind)} ${
                                     daily.wind_speed
-                                } $speedUnits"
+                                } $speedUnits ${
+                                    with(daily.wind_deg) {
+                                        val directions = listOf(
+                                            stringResource(id = R.string.wind_north),
+                                            stringResource(id = R.string.wind_northeast),
+                                            stringResource(id = R.string.wind_east),
+                                            stringResource(id = R.string.wind_southeast),
+                                            stringResource(id = R.string.wind_south),
+                                            stringResource(id = R.string.wind_southwest),
+                                            stringResource(id = R.string.wind_west),
+                                            stringResource(id = R.string.wind_northwest)
+                                        )
+                                        var count = (this * 8 / 360f).roundToInt()
+                                        count = (count + 8) % 8
+                                        directions[count]
+                                    }
+                                }"
                             )
                         }
-                        Text(text = daily.weather[0].description)
+                        WeatherIconElement(
+                            iconCode = daily.weather[0].icon,
+                            iconDescription = daily.weather[0].description,
+                            iconSize = DIMEN_MEDIUM
+                        )
                     }
                 }
             }

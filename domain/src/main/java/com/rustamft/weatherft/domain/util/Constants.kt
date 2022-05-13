@@ -17,3 +17,4 @@ const val PATTERN_DATE = "dd.MM.yyyy"
 const val PATTERN_TIME = "HH:mm"
 
 const val TAG_OPEN_WEATHER_API = "OPEN_WEATHER_API"
+const val TAG_WEATHER_ICON = "TAG_WEATHER_ICON"
