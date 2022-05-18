@@ -37,9 +37,7 @@ fun WeatherIconElement(
     } else {
         Image(
             modifier = Modifier.size(iconSize),
-            painter = painterResource(
-                id = drawableId
-            ),
+            painter = painterResource(id = drawableId),
             contentDescription = iconDescription,
             contentScale = ContentScale.FillBounds
         )

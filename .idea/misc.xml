@@ -13,6 +13,13 @@
         <entry key="app/src/main/res/drawable/ic_save.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.1235" />
+        <entry key="app/src/main/res/drawable/weather_01d.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/weather_01n.xml" value="0.1015" />
+        <entry key="app/src/main/res/drawable/weather_03d.xml" value="0.1015" />
+        <entry key="app/src/main/res/drawable/weather_09d.xml" value="0.207" />
+        <entry key="app/src/main/res/drawable/weather_10d.xml" value="0.1015" />
+        <entry key="app/src/main/res/drawable/weather_11d.xml" value="0.1015" />
+        <entry key="app/src/main/res/drawable/weather_13d.xml" value="0.1015" />
       </map>
     </option>
   </component>
