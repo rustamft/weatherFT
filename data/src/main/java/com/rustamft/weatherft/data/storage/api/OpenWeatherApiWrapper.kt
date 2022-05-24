@@ -6,7 +6,9 @@ import com.rustamft.weatherft.data.model.WeatherData
 import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.domain.util.TAG_OPEN_WEATHER_API
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -15,6 +17,11 @@ internal class OpenWeatherApiWrapper(
     private val openWeatherApi: OpenWeatherApi
 ) : ExternalApi {
 
+    @Throws(
+        IOException::class,
+        NullPointerException::class,
+        Exception::class
+    )
     override suspend fun searchCity(
         cityName: String,
         apiKey: String
@@ -28,6 +35,11 @@ internal class OpenWeatherApiWrapper(
         }
     }
 
+    @Throws(
+        IOException::class,
+        NullPointerException::class,
+        Exception::class
+    )
     override suspend fun getWeather(
         latitude: Double,
         longitude: Double,
@@ -51,8 +63,10 @@ internal class OpenWeatherApiWrapper(
     private suspend fun <T> makeApiCall(call: suspend () -> Response<T>): Result<T> {
         return withContext(Dispatchers.IO) {
             runCatching {
-                val response: Response<T> = call()
-                response.body()!!
+                withTimeout(10000) {
+                    val response: Response<T> = call()
+                    response.body()!!
+                }
             }.onFailure {
                 Log.e(TAG_OPEN_WEATHER_API, it.message.toString())
                 rethrow(it)
@@ -66,10 +80,13 @@ internal class OpenWeatherApiWrapper(
                 throw IOException("IOException, internet connection might have been lost.")
             }
             is HttpException -> {
-                throw HttpException(throwable.response()!!)
+                throw Exception(throwable.message())
             }
             is NullPointerException -> {
                 throw NullPointerException("Response is not successful.")
+            }
+            is TimeoutCancellationException -> {
+                throw Exception("Connection timeout.")
             }
             else -> {
                 throw Exception("Unknown exception.")

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -11,11 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,6 +30,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.App
+import com.rustamft.weatherft.domain.model.City
 import com.rustamft.weatherft.domain.model.Weather
 import com.rustamft.weatherft.domain.util.PATTERN_DATE_TIME
 import com.rustamft.weatherft.domain.util.PATTERN_TIME
@@ -35,6 +39,7 @@ import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
 import com.rustamft.weatherft.presentation.element.WeatherIconElement
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
+import com.rustamft.weatherft.presentation.theme.AppTheme
 import com.rustamft.weatherft.presentation.theme.DIMEN_BIG
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
@@ -46,19 +51,18 @@ import kotlin.math.roundToInt
 @Destination(start = true, route = ROUTE_WEATHER)
 @Composable
 fun WeatherScreen(
+    viewModel: WeatherViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
     scaffoldState: ScaffoldState, // From DependenciesContainer.
-    viewModel: WeatherViewModel = hiltViewModel()
+    paddingValues: PaddingValues, // From DependenciesContainer.
+    cityState: State<City> = viewModel.cityFlow.collectAsState(initial = City("...")),
+    weatherState: State<Weather> = viewModel.weatherFlow.collectAsState(initial = Weather()),
 ) {
 
+    val city by cityState
+    val weather by weatherState
     val degrees = stringResource(R.string.degrees_centigrade)
-
-    val city by viewModel.cityFlow.collectAsState(
-        initial = com.rustamft.weatherft.domain.model.City("...")
-    )
-    val weather by viewModel.weatherFlow.collectAsState(
-        initial = Weather()
-    )
+    val scrollState = rememberScrollState()
 
     if (city.name == "") {
         navigator.navigate(LoginScreenDestination)
@@ -71,8 +75,10 @@ fun WeatherScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
@@ -146,7 +152,11 @@ fun WeatherScreen(
                 )
             }
         }
-        LazyRow(modifier = Modifier.background(MaterialTheme.colors.secondary)) {
+        LazyRow(
+            modifier = Modifier
+                .padding(bottom = paddingValues.calculateBottomPadding())
+                .background(AppTheme.colors.secondary)
+        ) {
             itemsIndexed(weather.hourly.take(13)) { _: Int, hourly: Weather.Hourly ->
                 Column(
                     modifier = Modifier.padding(DIMEN_SMALL),

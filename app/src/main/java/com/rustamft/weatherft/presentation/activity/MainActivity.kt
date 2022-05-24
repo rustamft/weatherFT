@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -23,7 +22,6 @@ import com.rustamft.weatherft.presentation.navigation.BottomNavItem
 import com.rustamft.weatherft.presentation.navigation.TopBar
 import com.rustamft.weatherft.presentation.screen.NavGraphs
 import com.rustamft.weatherft.presentation.theme.AppTheme
-import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,11 +66,11 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     DestinationsNavHost(
-                        modifier = Modifier.padding(bottom = DIMEN_MEDIUM),
                         navGraph = NavGraphs.root,
                         navController = navController,
                         dependenciesContainerBuilder = {
                             dependency(scaffoldState)
+                            dependency(it)
                             dependency(appPreferencesState)
                         }
                     )

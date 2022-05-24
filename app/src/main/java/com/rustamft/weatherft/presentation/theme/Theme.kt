@@ -35,6 +35,14 @@ private val LightColorPalette = lightColors(
     */
 )
 
+private var Colors = DarkColorPalette
+private var DarkTheme = true
+
+object AppTheme {
+    val colors get() = Colors
+    val darkTheme get() = DarkTheme
+}
+
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -56,4 +64,7 @@ fun AppTheme(
         shapes = Shapes,
         content = content
     )
+
+    Colors = colors
+    DarkTheme = darkTheme
 }

@@ -11,8 +11,8 @@ import com.rustamft.weatherft.domain.model.AppPreferences
 import com.rustamft.weatherft.domain.model.City
 import com.rustamft.weatherft.domain.usecase.GetApiKeyUseCase
 import com.rustamft.weatherft.domain.usecase.SaveApiKeyUseCase
-import com.rustamft.weatherft.domain.usecase.SaveCityUseCase
 import com.rustamft.weatherft.domain.usecase.SaveAppPreferencesUseCase
+import com.rustamft.weatherft.domain.usecase.SaveCityUseCase
 import com.rustamft.weatherft.domain.usecase.SearchCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ internal class LoginViewModel @Inject constructor(
 
     fun updateListOfCities(scaffoldState: ScaffoldState) {
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 listOfCities = searchCityUseCase.execute(
                     City(name = cityName),
                     ApiKey(value = apiKey)

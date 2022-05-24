@@ -10,6 +10,7 @@ import com.rustamft.weatherft.domain.util.EXCLUDE_WEATHER
 import com.rustamft.weatherft.domain.util.UNITS_METRIC
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
+import java.io.IOException
 
 internal class WeatherRepositoryImpl(
     private val weatherStorage: WeatherStorage,
@@ -26,6 +27,11 @@ internal class WeatherRepositoryImpl(
         }
     }
 
+    @Throws(
+        IOException::class,
+        NullPointerException::class,
+        Exception::class
+    )
     override suspend fun getWeatherFromApi(
         city: City,
         apiKey: ApiKey,

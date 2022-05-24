@@ -6,6 +6,7 @@ import com.rustamft.weatherft.domain.repository.WeatherRepository
 import com.rustamft.weatherft.domain.util.TimeProvider
 import com.rustamft.weatherft.domain.util.round
 import kotlinx.coroutines.flow.first
+import java.io.IOException
 
 class UpdateWeatherUseCase(
     private val apiKeyRepository: ApiKeyRepository,
@@ -13,6 +14,11 @@ class UpdateWeatherUseCase(
     private val weatherRepository: WeatherRepository
 ) {
 
+    @Throws(
+        IOException::class,
+        NullPointerException::class,
+        Exception::class
+    )
     suspend fun execute(language: String) {
         val city = cityRepository.getCity().first()
         val weather = weatherRepository.getWeatherFromStorage().first()

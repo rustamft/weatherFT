@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 internal class CityRepositoryImpl(
     private val cityStorage: CityStorage,
@@ -27,6 +28,11 @@ internal class CityRepositoryImpl(
         }
     }
 
+    @Throws(
+        IOException::class,
+        NullPointerException::class,
+        Exception::class
+    )
     override suspend fun searchCity(city: City, apiKey: ApiKey): List<City> {
         return withContext(Dispatchers.IO) {
             val listOfCityData = api.searchCity(cityName = city.name, apiKey = apiKey.value)

@@ -23,10 +23,10 @@
     <string name="open_weather_map_site">Open Weather Map site</string>
     <string name="save_api_key">Save API key</string>
     <string name="something_went_wrong">&#128565;</string>
-    <string name="sunrise">☀</string>
-    <string name="sunset">&#127769;</string>
-    <string name="temperature_max">&#129397;</string>
-    <string name="temperature_min">&#129398;</string>
+    <string name="sunrise">🌅</string>
+    <string name="sunset">🌃</string>
+    <string name="temperature_max">️⬆️</string>
+    <string name="temperature_min">️⬇️</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="updated_at">&#128260;</string>

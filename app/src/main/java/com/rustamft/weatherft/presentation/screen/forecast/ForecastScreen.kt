@@ -2,6 +2,7 @@ package com.rustamft.weatherft.presentation.screen.forecast
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.rustamft.weatherft.R
+import com.rustamft.weatherft.domain.model.Weather
 import com.rustamft.weatherft.domain.util.PATTERN_DATE
 import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
 import com.rustamft.weatherft.domain.util.TimeProvider
@@ -33,21 +36,22 @@ import kotlin.math.roundToInt
 @Destination(route = ROUTE_FORECAST)
 @Composable
 fun ForecastScreen(
-    viewModel: ForecastViewModel = hiltViewModel()
+    viewModel: ForecastViewModel = hiltViewModel(),
+    paddingValues: PaddingValues, // From DependenciesContainer.
+    weatherState: State<Weather> = viewModel.weatherFlow.collectAsState(initial = Weather())
 ) {
 
+    val weather by weatherState
     val degrees = stringResource(id = R.string.degrees_centigrade)
     val speedUnits = stringResource(id = R.string.meters_per_second)
 
-    val weather by viewModel.weatherFlow.collectAsState(
-        initial = com.rustamft.weatherft.domain.model.Weather()
-    )
-
     LazyColumn(
-        modifier = Modifier.padding(DIMEN_SMALL),
+        modifier = Modifier
+            .padding(bottom = paddingValues.calculateBottomPadding())
+            .padding(horizontal = DIMEN_SMALL),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        itemsIndexed(weather.daily) { index: Int, daily: com.rustamft.weatherft.domain.model.Weather.Daily ->
+        itemsIndexed(weather.daily) { index: Int, daily: Weather.Daily ->
 
             val time = when (index) {
                 0 -> stringResource(R.string.today)
