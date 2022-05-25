@@ -15,6 +15,8 @@ import com.rustamft.weatherft.domain.usecase.SaveAppPreferencesUseCase
 import com.rustamft.weatherft.domain.usecase.SaveCityUseCase
 import com.rustamft.weatherft.domain.usecase.SearchCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +29,8 @@ internal class LoginViewModel @Inject constructor(
     private val searchCityUseCase: SearchCityUseCase
 ) : ViewModel() {
 
+    private val errorChannel = Channel<String>()
+    val errorFlow = errorChannel.receiveAsFlow()
     var apiKey by mutableStateOf("")
     var cityName by mutableStateOf("")
     var listOfCities by mutableStateOf(listOf<City>())
@@ -56,7 +60,7 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateListOfCities(scaffoldState: ScaffoldState) {
+    fun updateListOfCities() {
         viewModelScope.launch {
             runCatching {
                 listOfCities = searchCityUseCase.execute(
@@ -64,7 +68,7 @@ internal class LoginViewModel @Inject constructor(
                     ApiKey(value = apiKey)
                 )
             }.onFailure {
-                scaffoldState.snackbarHostState.showSnackbar(it.message.toString())
+                errorChannel.send(it.message.toString())
             }
         }
     }

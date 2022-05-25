@@ -1,6 +1,5 @@
 package com.rustamft.weatherft.presentation.screen.weather
 
-import androidx.compose.material.ScaffoldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rustamft.weatherft.app.App
@@ -8,6 +7,8 @@ import com.rustamft.weatherft.domain.usecase.GetCityUseCase
 import com.rustamft.weatherft.domain.usecase.GetWeatherUseCase
 import com.rustamft.weatherft.domain.usecase.UpdateWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,15 +19,17 @@ class WeatherViewModel @Inject constructor(
     private val updateWeatherUseCase: UpdateWeatherUseCase
 ) : ViewModel() {
 
+    private val errorChannel = Channel<String>()
+    val errorFlow = errorChannel.receiveAsFlow()
     val cityFlow = getCityUseCase.execute()
     val weatherFlow = getWeatherUseCase.execute()
 
-    fun updateWeather(scaffoldState: ScaffoldState) {
+    fun updateWeather() {
         viewModelScope.launch {
             runCatching {
                 updateWeatherUseCase.execute(App.language)
             }.onFailure {
-                scaffoldState.snackbarHostState.showSnackbar(it.message.toString())
+                errorChannel.send(it.message.toString())
             }
         }
     }

@@ -11,10 +11,7 @@ const val ROUTE_FORECAST = "forecast_screen"
 
 const val EXCLUDE_WEATHER = "minutely,alerts"
 const val UNITS_METRIC = "metric"
-
-const val PATTERN_DATE_TIME = "dd.MM.yyyy HH:mm"
-const val PATTERN_DATE = "dd.MM.yyyy"
-const val PATTERN_TIME = "HH:mm"
+const val FIFTEEN_MINUTES = 15L * 60L * 1000L
 
 const val TAG_OPEN_WEATHER_API = "OPEN_WEATHER_API"
 const val TAG_WEATHER_ICON = "TAG_WEATHER_ICON"

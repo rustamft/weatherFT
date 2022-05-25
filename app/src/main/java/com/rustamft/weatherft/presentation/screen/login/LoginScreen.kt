@@ -15,6 +15,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,8 +49,16 @@ internal fun LoginScreen(
     navigator: DestinationsNavigator,
     scaffoldState: ScaffoldState, // From DependenciesContainer.
     appPreferencesState: State<AppPreferences>, // From DependenciesContainer.
-    loginViewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(key1 = scaffoldState) {
+        viewModel.errorFlow.collect { error ->
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = error
+            )
+        }
+    }
 
     @Composable
     fun PreferencesElementsSet() {
@@ -57,7 +66,7 @@ internal fun LoginScreen(
             name = stringResource(R.string.dark_theme),
             isChecked = appPreferencesState.value.darkTheme,
             onCheckedChange = {
-                loginViewModel.saveAppPreferences(
+                viewModel.saveAppPreferences(
                     appPreferences = AppPreferences(darkTheme = it)
                 )
             }
@@ -74,8 +83,8 @@ internal fun LoginScreen(
             var openDialog by remember { mutableStateOf(false) }
             var openApiKeysPage by remember { mutableStateOf(false) }
             TextFieldElement(
-                text = loginViewModel.apiKey,
-                onValueChange = { loginViewModel.apiKey = it },
+                text = viewModel.apiKey,
+                onValueChange = { viewModel.apiKey = it },
                 label = stringResource(R.string.open_weather_api_key)
             )
             IconButtonElement(
@@ -123,15 +132,15 @@ internal fun LoginScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             TextFieldElement(
-                text = loginViewModel.cityName,
-                onValueChange = { loginViewModel.cityName = it },
+                text = viewModel.cityName,
+                onValueChange = { viewModel.cityName = it },
                 label = stringResource(R.string.city)
             )
             IconButtonElement(
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = stringResource(R.string.find_city),
                 onClick = {
-                    loginViewModel.updateListOfCities(scaffoldState)
+                    viewModel.updateListOfCities()
                 }
             )
         }
@@ -140,11 +149,11 @@ internal fun LoginScreen(
     @Composable
     fun ListOfCitiesElementsSet() {
         LazyColumn {
-            itemsIndexed(loginViewModel.listOfCities) { _: Int, city: City ->
+            itemsIndexed(viewModel.listOfCities) { _: Int, city: City ->
                 TextButtonElement(
                     onClick = {
-                        loginViewModel.saveCity(city)
-                        loginViewModel.saveApiKey()
+                        viewModel.saveCity(city)
+                        viewModel.saveApiKey()
                         navigator.navigate(WeatherScreenDestination)
                     },
                     text = "${city.localNames[App.language]}, ${city.state}, ${city.country}"
@@ -161,7 +170,7 @@ internal fun LoginScreen(
         PreferencesElementsSet()
         Spacer(modifier = Modifier.height(DIMEN_SMALL))
         ApiElementsSet()
-        if (loginViewModel.apiKey.isNotEmpty()) {
+        if (viewModel.apiKey.isNotEmpty()) {
             Spacer(modifier = Modifier.height(DIMEN_SMALL))
             CityElementsSet()
         }

@@ -18,6 +18,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,10 +33,8 @@ import com.rustamft.weatherft.R
 import com.rustamft.weatherft.app.App
 import com.rustamft.weatherft.domain.model.City
 import com.rustamft.weatherft.domain.model.Weather
-import com.rustamft.weatherft.domain.util.PATTERN_DATE_TIME
-import com.rustamft.weatherft.domain.util.PATTERN_TIME
 import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
-import com.rustamft.weatherft.domain.util.TimeProvider
+import com.rustamft.weatherft.domain.util.asDateTime
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
 import com.rustamft.weatherft.presentation.element.WeatherIconElement
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
@@ -59,17 +58,24 @@ fun WeatherScreen(
     weatherState: State<Weather> = viewModel.weatherFlow.collectAsState(initial = Weather()),
 ) {
 
+    val scrollState = rememberScrollState()
     val city by cityState
     val weather by weatherState
     val degrees = stringResource(R.string.degrees_centigrade)
-    val scrollState = rememberScrollState()
 
     if (city.name == "") {
         navigator.navigate(LoginScreenDestination)
     } else if (city.name != "...") {
+        LaunchedEffect(key1 = scaffoldState) {
+            viewModel.errorFlow.collect { error ->
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = error
+                )
+            }
+        }
         OnLifecycleEvent { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                viewModel.updateWeather(scaffoldState)
+                viewModel.updateWeather()
             }
         }
     }
@@ -87,12 +93,12 @@ fun WeatherScreen(
                     text = city.localNames[App.language] ?: city.name,
                     fontSize = FONT_SIZE_NORMAL
                 )
+                val updatedAtDateTime = (weather.current.dt * 1000L).asDateTime()
                 Text(
                     text = "${stringResource(R.string.updated_at)} ${
-                        TimeProvider.millisToString(
-                            weather.current.dt * 1000L,
-                            PATTERN_DATE_TIME
-                        )
+                        updatedAtDateTime.date
+                    } ${
+                        updatedAtDateTime.time
                     }"
                 )
             }
@@ -136,19 +142,13 @@ fun WeatherScreen(
                         }
                     }",
                 )
+                val sunriseDateTime = (weather.current.sunrise * 1000L).asDateTime()
                 Text(
-                    text = "${stringResource(id = R.string.sunrise)} ${
-                        TimeProvider.millisToString(
-                            weather.current.sunrise * 1000L, PATTERN_TIME
-                        )
-                    }"
+                    text = "${stringResource(id = R.string.sunrise)} ${sunriseDateTime.time}"
                 )
+                val sunsetDateTime = (weather.current.sunset * 1000L).asDateTime()
                 Text(
-                    text = "${stringResource(id = R.string.sunset)} ${
-                        TimeProvider.millisToString(
-                            weather.current.sunset * 1000L, PATTERN_TIME
-                        )
-                    }"
+                    text = "${stringResource(id = R.string.sunset)} ${sunsetDateTime.time}"
                 )
             }
         }
@@ -162,7 +162,8 @@ fun WeatherScreen(
                     modifier = Modifier.padding(DIMEN_SMALL),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = TimeProvider.millisToString(hourly.dt * 1000L, PATTERN_TIME))
+                    val hourlyDateTime = (hourly.dt * 1000L).asDateTime()
+                    Text(text = hourlyDateTime.time)
                     Card(
                         modifier = Modifier
                             .wrapContentSize()

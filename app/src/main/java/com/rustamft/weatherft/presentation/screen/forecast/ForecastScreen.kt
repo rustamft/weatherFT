@@ -23,9 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.rustamft.weatherft.R
 import com.rustamft.weatherft.domain.model.Weather
-import com.rustamft.weatherft.domain.util.PATTERN_DATE
 import com.rustamft.weatherft.domain.util.ROUTE_FORECAST
-import com.rustamft.weatherft.domain.util.TimeProvider
+import com.rustamft.weatherft.domain.util.asDateTime
 import com.rustamft.weatherft.presentation.element.WeatherIconElement
 import com.rustamft.weatherft.presentation.theme.DIMEN_MEDIUM
 import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
@@ -53,10 +52,11 @@ fun ForecastScreen(
     ) {
         itemsIndexed(weather.daily) { index: Int, daily: Weather.Daily ->
 
+            val dailyDateTime = (daily.dt * 1000L).asDateTime()
             val time = when (index) {
                 0 -> stringResource(R.string.today)
                 1 -> stringResource(R.string.tomorrow)
-                else -> TimeProvider.millisToString(daily.dt * 1000L, PATTERN_DATE)
+                else -> "${dailyDateTime.dayOfWeek} ${dailyDateTime.date}"
             }
 
             Text(text = time, fontSize = FONT_SIZE_SMALL)
