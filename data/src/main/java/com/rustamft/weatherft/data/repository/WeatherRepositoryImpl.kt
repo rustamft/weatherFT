@@ -9,7 +9,7 @@ import com.rustamft.weatherft.domain.repository.WeatherRepository
 import com.rustamft.weatherft.domain.util.EXCLUDE_WEATHER
 import com.rustamft.weatherft.domain.util.UNITS_METRIC
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 internal class WeatherRepositoryImpl(
@@ -21,11 +21,7 @@ internal class WeatherRepositoryImpl(
         weatherStorage.save(weather.convert())
     }
 
-    override fun getWeatherFromStorage(): Flow<Weather> {
-        return weatherStorage.get().transform {
-            emit(it.convert())
-        }
-    }
+    override fun getWeatherFromStorage(): Flow<Weather> = weatherStorage.get().map { it.convert() }
 
     @Throws(
         IOException::class,

@@ -7,7 +7,5 @@ class SaveApiKeyUseCase(
     private val apiKeyRepository: ApiKeyRepository
 ) {
 
-    suspend fun execute(apiKey: ApiKey) {
-        apiKeyRepository.saveApiKey(apiKey)
-    }
+    suspend fun execute(apiKey: ApiKey) = apiKeyRepository.saveApiKey(apiKey)
 }

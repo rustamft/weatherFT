@@ -2,10 +2,11 @@ package com.rustamft.weatherft.domain.usecase
 
 import com.rustamft.weatherft.domain.model.ApiKey
 import com.rustamft.weatherft.domain.repository.ApiKeyRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetApiKeyUseCase(
     private val apiKeyRepository: ApiKeyRepository
 ) {
 
-    suspend fun execute(): ApiKey = apiKeyRepository.getApiKey()
+    fun execute(): Flow<ApiKey> = apiKeyRepository.getApiKey()
 }

@@ -1,6 +1,5 @@
 package com.rustamft.weatherft.presentation.screen.login
 
-import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,6 +15,7 @@ import com.rustamft.weatherft.domain.usecase.SaveCityUseCase
 import com.rustamft.weatherft.domain.usecase.SearchCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,12 +33,12 @@ internal class LoginViewModel @Inject constructor(
     val errorFlow = errorChannel.receiveAsFlow()
     var apiKey by mutableStateOf("")
     var cityName by mutableStateOf("")
-    var listOfCities by mutableStateOf(listOf<City>())
+    var listOfCities by mutableStateOf(emptyList<City>())
         private set
 
     init {
         viewModelScope.launch {
-            apiKey = getApiKeyUseCase.execute().value
+            apiKey = getApiKeyUseCase.execute().first().value
         }
     }
 

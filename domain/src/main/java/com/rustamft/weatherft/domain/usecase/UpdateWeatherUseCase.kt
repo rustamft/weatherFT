@@ -28,7 +28,7 @@ class UpdateWeatherUseCase(
                 city.lon.round(2) != weather.lon.round(2) ||
                 now - weather.current.dt * 1000L > FIFTEEN_MINUTES
         if (isUpdateNeeded) {
-            val apiKey = apiKeyRepository.getApiKey()
+            val apiKey = apiKeyRepository.getApiKey().first()
             val updatedWeather = weatherRepository.getWeatherFromApi(
                 city,
                 apiKey,

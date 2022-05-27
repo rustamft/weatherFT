@@ -7,7 +7,5 @@ class SaveCityUseCase(
     private val cityRepository: CityRepository
 ) {
 
-    suspend fun execute(city: City) {
-        cityRepository.saveCity(city)
-    }
+    suspend fun execute(city: City) = cityRepository.saveCity(city)
 }

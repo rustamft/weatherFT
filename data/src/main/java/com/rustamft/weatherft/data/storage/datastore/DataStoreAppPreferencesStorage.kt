@@ -5,7 +5,7 @@ import com.rustamft.weatherft.data.model.AppPreferencesData
 import com.rustamft.weatherft.data.model.DataContainer
 import com.rustamft.weatherft.data.storage.AppPreferencesStorage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.map
 
 internal class DataStoreAppPreferencesStorage(
     private val dataStore: DataStore<DataContainer>
@@ -17,9 +17,5 @@ internal class DataStoreAppPreferencesStorage(
         }
     }
 
-    override fun get(): Flow<AppPreferencesData> {
-        return dataStore.data.transform {
-            emit(it.appPreferencesData)
-        }
-    }
+    override fun get(): Flow<AppPreferencesData> = dataStore.data.map { it.appPreferencesData }
 }

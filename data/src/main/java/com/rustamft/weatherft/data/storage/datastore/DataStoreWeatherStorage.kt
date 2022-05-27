@@ -5,7 +5,7 @@ import com.rustamft.weatherft.data.model.DataContainer
 import com.rustamft.weatherft.data.model.WeatherData
 import com.rustamft.weatherft.data.storage.WeatherStorage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.map
 
 internal class DataStoreWeatherStorage(
     private val dataStore: DataStore<DataContainer>
@@ -17,9 +17,5 @@ internal class DataStoreWeatherStorage(
         }
     }
 
-    override fun get(): Flow<WeatherData> {
-        return dataStore.data.transform {
-            emit(it.weatherData)
-        }
-    }
+    override fun get(): Flow<WeatherData> = dataStore.data.map { it.weatherData }
 }

@@ -4,7 +4,8 @@ import androidx.datastore.core.DataStore
 import com.rustamft.weatherft.data.model.ApiKeyData
 import com.rustamft.weatherft.data.model.DataContainer
 import com.rustamft.weatherft.data.storage.ApiKeyStorage
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class DataStoreApiKeyStorage(
     private val dataStore: DataStore<DataContainer>
@@ -16,7 +17,5 @@ internal class DataStoreApiKeyStorage(
         }
     }
 
-    override suspend fun get(): ApiKeyData {
-        return dataStore.data.first().apiKeyData
-    }
+    override fun get(): Flow<ApiKeyData> = dataStore.data.map { it.apiKeyData }
 }

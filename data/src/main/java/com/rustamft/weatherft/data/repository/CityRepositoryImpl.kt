@@ -1,13 +1,13 @@
 package com.rustamft.weatherft.data.repository
 
-import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.data.storage.CityStorage
+import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.domain.model.ApiKey
 import com.rustamft.weatherft.domain.model.City
 import com.rustamft.weatherft.domain.repository.CityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -22,11 +22,7 @@ internal class CityRepositoryImpl(
         }
     }
 
-    override fun getCity(): Flow<City> {
-        return cityStorage.get().transform {
-            emit(it.convert())
-        }
-    }
+    override fun getCity(): Flow<City> = cityStorage.get().map { it.convert() }
 
     @Throws(
         IOException::class,
