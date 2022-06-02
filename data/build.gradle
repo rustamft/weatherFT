@@ -39,7 +39,7 @@ dependencies {
 
     implementation project(path: ':domain')
     // Coroutines.
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     // DataStore.
     implementation 'androidx.datastore:datastore:1.0.0'
     // Gson converter.

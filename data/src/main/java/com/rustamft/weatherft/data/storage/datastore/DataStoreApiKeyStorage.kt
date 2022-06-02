@@ -2,7 +2,7 @@ package com.rustamft.weatherft.data.storage.datastore
 
 import androidx.datastore.core.DataStore
 import com.rustamft.weatherft.data.model.ApiKeyData
-import com.rustamft.weatherft.data.model.DataContainer
+import com.rustamft.weatherft.data.model.container.DataContainer
 import com.rustamft.weatherft.data.storage.ApiKeyStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,7 +1,11 @@
-package com.rustamft.weatherft.data.model
+package com.rustamft.weatherft.data.model.container
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.rustamft.weatherft.data.model.ApiKeyData
+import com.rustamft.weatherft.data.model.AppPreferencesData
+import com.rustamft.weatherft.data.model.CityData
+import com.rustamft.weatherft.data.model.WeatherData
 import java.io.InputStream
 import java.io.OutputStream
 

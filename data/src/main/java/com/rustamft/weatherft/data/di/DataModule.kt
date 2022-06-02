@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import com.rustamft.weatherft.data.model.DataContainer
+import com.rustamft.weatherft.data.model.container.DataContainer
 import com.rustamft.weatherft.data.repository.ApiKeyRepositoryImpl
 import com.rustamft.weatherft.data.repository.AppPreferencesRepositoryImpl
 import com.rustamft.weatherft.data.repository.CityRepositoryImpl

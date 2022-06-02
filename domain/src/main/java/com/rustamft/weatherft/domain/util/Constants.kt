@@ -1,6 +1,6 @@
 package com.rustamft.weatherft.domain.util
 
-const val STORED_PREFERENCES = "stored_preferences.json"
+const val STORED_PREFERENCES = "weatherft_preferences.json"
 
 const val GITHUB_LINK = "https://github.com/rustamft/weatherFT"
 const val API_KEYS_LINK = "https://home.openweathermap.org/api_keys"
