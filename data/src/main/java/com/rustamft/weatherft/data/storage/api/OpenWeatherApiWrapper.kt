@@ -5,9 +5,7 @@ import com.rustamft.weatherft.data.model.CityData
 import com.rustamft.weatherft.data.model.WeatherData
 import com.rustamft.weatherft.data.storage.ExternalApi
 import com.rustamft.weatherft.domain.util.TAG_OPEN_WEATHER_API
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import retrofit2.HttpException
 import retrofit2.Response
@@ -61,16 +59,14 @@ internal class OpenWeatherApiWrapper(
     }
 
     private suspend fun <T> makeApiCall(call: suspend () -> Response<T>): Result<T> {
-        return withContext(Dispatchers.IO) {
-            runCatching {
-                withTimeout(10000) {
-                    val response: Response<T> = call()
-                    response.body()!!
-                }
-            }.onFailure {
-                Log.e(TAG_OPEN_WEATHER_API, it.message.toString())
-                rethrow(it)
+        return runCatching {
+            withTimeout(10000) {
+                val response: Response<T> = call()
+                response.body()!!
             }
+        }.onFailure {
+            Log.e(TAG_OPEN_WEATHER_API, it.message.toString())
+            rethrow(it)
         }
     }
 
