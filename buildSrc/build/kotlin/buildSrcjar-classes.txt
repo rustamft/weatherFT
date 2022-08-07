@@ -1,0 +1,1 @@
+/home/rustamft/Library/Android/projects/weatherFT/buildSrc/build/classes/kotlin/main/Constants.class
