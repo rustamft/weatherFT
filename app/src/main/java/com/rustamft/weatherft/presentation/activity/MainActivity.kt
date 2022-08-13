@@ -61,16 +61,16 @@ class MainActivity : ComponentActivity() {
                                     Icons.Default.List
                                 )
                             ),
-                            hideForRoutes = listOf(ROUTE_LOGIN)
+                            disableForRoutes = listOf(ROUTE_LOGIN)
                         )
                     }
-                ) {
+                ) { paddingValues ->
                     DestinationsNavHost(
                         navGraph = NavGraphs.root,
                         navController = navController,
                         dependenciesContainerBuilder = {
                             dependency(scaffoldState)
-                            dependency(it)
+                            dependency(paddingValues)
                             dependency(appPreferencesState)
                         }
                     )

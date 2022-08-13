@@ -15,18 +15,24 @@ import com.rustamft.weatherft.presentation.theme.DIMEN_SMALL
 fun BottomNavBar(
     navController: NavHostController,
     items: List<BottomNavItem>,
-    hideForRoutes: List<String> = emptyList()
+    disableForRoutes: List<String> = emptyList()
 ) {
 
     val backStackEntry = navController.currentBackStackEntryAsState()
 
-    if (!hideForRoutes.contains(backStackEntry.value?.destination?.route)) {
-        BottomNavigation(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = DIMEN_SMALL,
-            backgroundColor = MaterialTheme.colors.background,
-            contentColor = MaterialTheme.colors.primary
-        ) {
+    BottomNavigation(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = DIMEN_SMALL,
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.primary
+    ) {
+        if (disableForRoutes.contains(backStackEntry.value?.destination?.route)) {
+            BottomNavigationItem(
+                selected = true,
+                onClick = {},
+                icon = {}
+            )
+        } else {
             items.forEach { item ->
                 val selected = item.route == backStackEntry.value?.destination?.route
                 BottomNavigationItem(

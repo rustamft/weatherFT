@@ -1,5 +1,6 @@
 package com.rustamft.weatherft.presentation.screen.weather
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -58,10 +62,9 @@ fun WeatherScreen(
     weatherState: State<Weather> = viewModel.weatherFlow.collectAsState(initial = Weather()),
 ) {
 
-    val scrollState = rememberScrollState()
     val city by cityState
     val weather by weatherState
-    val degrees = stringResource(R.string.degrees_centigrade)
+    val degreesName = stringResource(R.string.degrees_centigrade)
 
     if (city.name == "") {
         navigator.navigate(LoginScreenDestination)
@@ -79,6 +82,23 @@ fun WeatherScreen(
             }
         }
     }
+
+    WeatherScreenContent(
+        city = city,
+        weather = weather,
+        degreesName = degreesName,
+        bottomPadding = paddingValues.calculateBottomPadding()
+    )
+}
+
+@Composable
+fun WeatherScreenContent(
+    city: City,
+    weather: Weather,
+    degreesName: String,
+    bottomPadding: Dp,
+    scrollState: ScrollState = rememberScrollState()
+) {
 
     Column(
         modifier = Modifier
@@ -111,11 +131,11 @@ fun WeatherScreen(
         Box {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "${weather.current.temp}$degrees",
+                    text = "${weather.current.temp}$degreesName",
                     fontSize = FONT_SIZE_BIG
                 )
                 Text(
-                    text = "${stringResource(R.string.feels_like)} ${weather.current.feels_like}$degrees"
+                    text = "${stringResource(R.string.feels_like)} ${weather.current.feels_like}$degreesName"
                 )
             }
         }
@@ -154,10 +174,12 @@ fun WeatherScreen(
         }
         LazyRow(
             modifier = Modifier
-                .padding(bottom = paddingValues.calculateBottomPadding())
+                .padding(bottom = bottomPadding)
                 .background(AppTheme.colors.secondary)
         ) {
-            itemsIndexed(weather.hourly.take(13)) { _: Int, hourly: Weather.Hourly ->
+            itemsIndexed(
+                weather.hourly.takeIf { it.size >= 14 }?.slice(1..13) ?: emptyList()
+            ) { _: Int, hourly: Weather.Hourly ->
                 Column(
                     modifier = Modifier.padding(DIMEN_SMALL),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -181,7 +203,7 @@ fun WeatherScreen(
                                 iconSize = DIMEN_MEDIUM
                             )
                             Spacer(modifier = Modifier.height(DIMEN_SMALL))
-                            Text(text = "${hourly.temp}$degrees")
+                            Text(text = "${hourly.temp}$degreesName")
                             Text(text = "${hourly.wind_speed} ${stringResource(R.string.meters_per_second)} ${
                                 with(hourly.wind_deg) {
                                     val directions = listOf(
@@ -205,4 +227,15 @@ fun WeatherScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun WeatherScreenPreview() {
+    WeatherScreenContent(
+        city = City("Preview city"),
+        weather = Weather(),
+        degreesName = stringResource(R.string.degrees_centigrade),
+        bottomPadding = 10.dp
+    )
 }

@@ -19,6 +19,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.rustamft.weatherft.R
@@ -41,12 +44,28 @@ fun ForecastScreen(
 ) {
 
     val weather by weatherState
-    val degrees = stringResource(id = R.string.degrees_centigrade)
-    val speedUnits = stringResource(id = R.string.meters_per_second)
+    val degreesName = stringResource(id = R.string.degrees_centigrade)
+    val speedUnitsName = stringResource(id = R.string.meters_per_second)
+
+    ForecastScreenContent(
+        weather = weather,
+        degreesName = degreesName,
+        speedUnitsName = speedUnitsName,
+        bottomPadding = paddingValues.calculateBottomPadding()
+    )
+}
+
+@Composable
+fun ForecastScreenContent(
+    weather: Weather,
+    degreesName: String,
+    speedUnitsName: String,
+    bottomPadding: Dp
+) {
 
     LazyColumn(
         modifier = Modifier
-            .padding(bottom = paddingValues.calculateBottomPadding())
+            .padding(bottom = bottomPadding)
             .padding(horizontal = DIMEN_SMALL),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -54,9 +73,9 @@ fun ForecastScreen(
 
             val dailyDateTime = (daily.dt * 1000L).asDateTime()
             val time = when (index) {
-                0 -> stringResource(R.string.today)
-                1 -> stringResource(R.string.tomorrow)
-                else -> "${dailyDateTime.dayOfWeek} ${dailyDateTime.date}"
+                0 -> "${stringResource(R.string.today)} (${dailyDateTime.dayOfWeek})"
+                1 -> "${stringResource(R.string.tomorrow)} (${dailyDateTime.dayOfWeek})"
+                else -> "${dailyDateTime.date} (${dailyDateTime.dayOfWeek})"
             }
 
             Text(text = time, fontSize = FONT_SIZE_SMALL)
@@ -81,17 +100,17 @@ fun ForecastScreen(
                             Text(
                                 text = "${stringResource(id = R.string.temperature_max)} ${
                                     daily.temp.max
-                                }$degrees"
+                                }$degreesName"
                             )
                             Text(
                                 text = "${stringResource(id = R.string.temperature_min)} ${
                                     daily.temp.min
-                                }$degrees"
+                                }$degreesName"
                             )
                             Text(
                                 text = "${stringResource(id = R.string.wind)} ${
                                     daily.wind_speed
-                                } $speedUnits ${
+                                } $speedUnitsName ${
                                     with(daily.wind_deg) {
                                         val directions = listOf(
                                             stringResource(id = R.string.wind_north),
@@ -121,4 +140,18 @@ fun ForecastScreen(
             Spacer(modifier = Modifier.height(DIMEN_SMALL))
         }
     }
+}
+
+@Preview
+@Composable
+fun ForecastScreenPreview() {
+    val daily = Weather.Daily()
+    ForecastScreenContent(
+        weather = Weather(
+            daily = listOf(daily, daily, daily, daily, daily, daily)
+        ),
+        degreesName = stringResource(id = R.string.degrees_centigrade),
+        speedUnitsName = stringResource(id = R.string.meters_per_second),
+        bottomPadding = 5.dp
+    )
 }

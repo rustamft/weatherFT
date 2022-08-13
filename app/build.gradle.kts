@@ -20,14 +20,14 @@ kotlin {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.rustamft.weatherft"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
-        versionName = "0.8.6"
+        versionName = "0.8.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -38,7 +38,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -52,7 +55,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0-rc02"
+        kotlinCompilerExtensionVersion = Constants.COMPOSE_COMPILER_VERSION
     }
     packagingOptions {
         resources {
@@ -73,16 +76,15 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     // Compose
-    val composeVersion = "1.3.0-alpha02"
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation("androidx.compose.ui:ui:${Constants.COMPOSE_VERSION}")
+    implementation("androidx.compose.material:material:${Constants.COMPOSE_VERSION}")
+    implementation("androidx.compose.ui:ui-tooling-preview:${Constants.COMPOSE_VERSION}")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Constants.COMPOSE_VERSION}")
+    debugImplementation("androidx.compose.ui:ui-tooling:${Constants.COMPOSE_VERSION}")
     implementation("androidx.activity:activity-compose:1.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-    // Accompanist.
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.11-rc")
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.25.1")
     // Compose destinations
     val composeDestinationsVersion = "1.7.15-beta"
     implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
@@ -92,14 +94,14 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
     // Hilt
-    implementation("com.google.dagger:hilt-android:${Constants.HILT_VERSION}")
-    kapt("com.google.dagger:hilt-compiler:${Constants.HILT_VERSION}")
+    implementation("com.google.dagger:hilt-android:2.43.2")
+    kapt("com.google.dagger:hilt-compiler:2.43.2")
     // Hilt navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     // Coroutine test
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Constants.COROUTINE_VERSION}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     // MockK
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk:1.12.5")
     // LeakCanary
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
 }
