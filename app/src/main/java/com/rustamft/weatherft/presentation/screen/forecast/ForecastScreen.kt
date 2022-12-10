@@ -99,33 +99,33 @@ fun ForecastScreenContent(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = "${stringResource(id = R.string.temperature_max)} ${
-                                    daily.temp.max
+                                daily.temp.max
                                 }$degreesName"
                             )
                             Text(
                                 text = "${stringResource(id = R.string.temperature_min)} ${
-                                    daily.temp.min
+                                daily.temp.min
                                 }$degreesName"
                             )
                             Text(
                                 text = "${stringResource(id = R.string.wind)} ${
-                                    daily.wind_speed
+                                daily.wind_speed
                                 } $speedUnitsName ${
-                                    with(daily.wind_deg) {
-                                        val directions = listOf(
-                                            stringResource(id = R.string.wind_north),
-                                            stringResource(id = R.string.wind_northeast),
-                                            stringResource(id = R.string.wind_east),
-                                            stringResource(id = R.string.wind_southeast),
-                                            stringResource(id = R.string.wind_south),
-                                            stringResource(id = R.string.wind_southwest),
-                                            stringResource(id = R.string.wind_west),
-                                            stringResource(id = R.string.wind_northwest)
-                                        )
-                                        var count = (this * 8 / 360f).roundToInt()
-                                        count = (count + 8) % 8
-                                        directions[count]
-                                    }
+                                with(daily.wind_deg) {
+                                    val directions = listOf(
+                                        stringResource(id = R.string.wind_north),
+                                        stringResource(id = R.string.wind_northeast),
+                                        stringResource(id = R.string.wind_east),
+                                        stringResource(id = R.string.wind_southeast),
+                                        stringResource(id = R.string.wind_south),
+                                        stringResource(id = R.string.wind_southwest),
+                                        stringResource(id = R.string.wind_west),
+                                        stringResource(id = R.string.wind_northwest)
+                                    )
+                                    var count = (this * 8 / 360f).roundToInt()
+                                    count = (count + 8) % 8
+                                    directions[count]
+                                }
                                 }"
                             )
                         }

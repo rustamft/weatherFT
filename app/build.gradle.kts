@@ -5,7 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.devtools.ksp") version "${Constants.KOTLIN_VERSION}-1.0.6"
     id("dagger.hilt.android.plugin")
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
 
 kotlin {

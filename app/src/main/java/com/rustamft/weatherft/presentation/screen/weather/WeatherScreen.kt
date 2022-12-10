@@ -116,9 +116,9 @@ fun WeatherScreenContent(
                 val updatedAtDateTime = (weather.current.dt * 1000L).asDateTime()
                 Text(
                     text = "${stringResource(R.string.updated_at)} ${
-                        updatedAtDateTime.date
+                    updatedAtDateTime.date
                     } ${
-                        updatedAtDateTime.time
+                    updatedAtDateTime.time
                     }"
                 )
             }
@@ -143,23 +143,23 @@ fun WeatherScreenContent(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "${stringResource(R.string.wind)} ${
-                        weather.current.wind_speed
+                    weather.current.wind_speed
                     } ${stringResource(R.string.meters_per_second)} ${
-                        with(weather.current.wind_deg) {
-                            val directions = listOf(
-                                stringResource(id = R.string.wind_north),
-                                stringResource(id = R.string.wind_northeast),
-                                stringResource(id = R.string.wind_east),
-                                stringResource(id = R.string.wind_southeast),
-                                stringResource(id = R.string.wind_south),
-                                stringResource(id = R.string.wind_southwest),
-                                stringResource(id = R.string.wind_west),
-                                stringResource(id = R.string.wind_northwest)
-                            )
-                            var count = (this * 8 / 360f).roundToInt()
-                            count = (count + 8) % 8
-                            directions[count]
-                        }
+                    with(weather.current.wind_deg) {
+                        val directions = listOf(
+                            stringResource(id = R.string.wind_north),
+                            stringResource(id = R.string.wind_northeast),
+                            stringResource(id = R.string.wind_east),
+                            stringResource(id = R.string.wind_southeast),
+                            stringResource(id = R.string.wind_south),
+                            stringResource(id = R.string.wind_southwest),
+                            stringResource(id = R.string.wind_west),
+                            stringResource(id = R.string.wind_northwest)
+                        )
+                        var count = (this * 8 / 360f).roundToInt()
+                        count = (count + 8) % 8
+                        directions[count]
+                    }
                     }",
                 )
                 val sunriseDateTime = (weather.current.sunrise * 1000L).asDateTime()
@@ -204,7 +204,8 @@ fun WeatherScreenContent(
                             )
                             Spacer(modifier = Modifier.height(DIMEN_SMALL))
                             Text(text = "${hourly.temp}$degreesName")
-                            Text(text = "${hourly.wind_speed} ${stringResource(R.string.meters_per_second)} ${
+                            Text(
+                                text = "${hourly.wind_speed} ${stringResource(R.string.meters_per_second)} ${
                                 with(hourly.wind_deg) {
                                     val directions = listOf(
                                         stringResource(id = R.string.wind_north),
@@ -220,7 +221,8 @@ fun WeatherScreenContent(
                                     count = (count + 8) % 8
                                     directions[count]
                                 }
-                            }")
+                                }"
+                            )
                         }
                     }
                 }
