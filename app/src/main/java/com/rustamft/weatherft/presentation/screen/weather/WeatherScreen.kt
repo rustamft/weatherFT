@@ -5,13 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,12 +25,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -40,6 +43,7 @@ import com.rustamft.weatherft.domain.model.Weather
 import com.rustamft.weatherft.domain.util.ROUTE_WEATHER
 import com.rustamft.weatherft.domain.util.asDateTime
 import com.rustamft.weatherft.presentation.activity.OnLifecycleEvent
+import com.rustamft.weatherft.presentation.element.SwitchElement
 import com.rustamft.weatherft.presentation.element.WeatherIconElement
 import com.rustamft.weatherft.presentation.screen.destinations.LoginScreenDestination
 import com.rustamft.weatherft.presentation.theme.AppTheme
@@ -57,14 +61,12 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
     scaffoldState: ScaffoldState, // From DependenciesContainer.
-    paddingValues: PaddingValues, // From DependenciesContainer.
     cityState: State<City> = viewModel.cityFlow.collectAsState(initial = City("...")),
     weatherState: State<Weather> = viewModel.weatherFlow.collectAsState(initial = Weather()),
 ) {
 
     val city by cityState
     val weather by weatherState
-    val degreesName = stringResource(R.string.degrees_centigrade)
 
     if (city.name == "") {
         navigator.navigate(LoginScreenDestination)
@@ -85,9 +87,7 @@ fun WeatherScreen(
 
     WeatherScreenContent(
         city = city,
-        weather = weather,
-        degreesName = degreesName,
-        bottomPadding = paddingValues.calculateBottomPadding()
+        weather = weather
     )
 }
 
@@ -95,10 +95,11 @@ fun WeatherScreen(
 fun WeatherScreenContent(
     city: City,
     weather: Weather,
-    degreesName: String,
-    bottomPadding: Dp,
     scrollState: ScrollState = rememberScrollState()
 ) {
+
+    val degreesName = stringResource(R.string.degrees_centigrade)
+    var dailyForecastOn by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -116,9 +117,9 @@ fun WeatherScreenContent(
                 val updatedAtDateTime = (weather.current.dt * 1000L).asDateTime()
                 Text(
                     text = "${stringResource(R.string.updated_at)} ${
-                    updatedAtDateTime.date
+                        updatedAtDateTime.date
                     } ${
-                    updatedAtDateTime.time
+                        updatedAtDateTime.time
                     }"
                 )
             }
@@ -143,23 +144,23 @@ fun WeatherScreenContent(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "${stringResource(R.string.wind)} ${
-                    weather.current.wind_speed
+                        weather.current.wind_speed
                     } ${stringResource(R.string.meters_per_second)} ${
-                    with(weather.current.wind_deg) {
-                        val directions = listOf(
-                            stringResource(id = R.string.wind_north),
-                            stringResource(id = R.string.wind_northeast),
-                            stringResource(id = R.string.wind_east),
-                            stringResource(id = R.string.wind_southeast),
-                            stringResource(id = R.string.wind_south),
-                            stringResource(id = R.string.wind_southwest),
-                            stringResource(id = R.string.wind_west),
-                            stringResource(id = R.string.wind_northwest)
-                        )
-                        var count = (this * 8 / 360f).roundToInt()
-                        count = (count + 8) % 8
-                        directions[count]
-                    }
+                        with(weather.current.wind_deg) {
+                            val directions = listOf(
+                                stringResource(id = R.string.wind_north),
+                                stringResource(id = R.string.wind_northeast),
+                                stringResource(id = R.string.wind_east),
+                                stringResource(id = R.string.wind_southeast),
+                                stringResource(id = R.string.wind_south),
+                                stringResource(id = R.string.wind_southwest),
+                                stringResource(id = R.string.wind_west),
+                                stringResource(id = R.string.wind_northwest)
+                            )
+                            var count = (this * 8 / 360f).roundToInt()
+                            count = (count + 8) % 8
+                            directions[count]
+                        }
                     }",
                 )
                 val sunriseDateTime = (weather.current.sunrise * 1000L).asDateTime()
@@ -172,59 +173,143 @@ fun WeatherScreenContent(
                 )
             }
         }
-        LazyRow(
-            modifier = Modifier
-                .padding(bottom = bottomPadding)
-                .background(AppTheme.colors.secondary)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            SwitchElement(
+                name = stringResource(id = R.string.daily_forecast),
+                isChecked = dailyForecastOn,
+                onCheckedChange = { dailyForecastOn = !dailyForecastOn }
+            )
+            LazyRow(modifier = Modifier.background(AppTheme.colors.secondary)) {
+                if (dailyForecastOn) {
+                    dailyItems(
+                        dailyList = weather.daily,
+                        degreesName = degreesName
+                    )
+                } else {
+                    hourlyItems(
+                        hourlyList = weather.hourly,
+                        degreesName = degreesName
+                    )
+                }
+            }
+        }
+    }
+}
+
+fun LazyListScope.hourlyItems(
+    hourlyList: List<Weather.Hourly>,
+    degreesName: String
+) {
+    items(
+        items = hourlyList.takeIf { it.size >= 14 }?.slice(1..13) ?: emptyList()
+    ) { hourly: Weather.Hourly ->
+        Column(
+            modifier = Modifier.padding(DIMEN_SMALL),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            itemsIndexed(
-                weather.hourly.takeIf { it.size >= 14 }?.slice(1..13) ?: emptyList()
-            ) { _: Int, hourly: Weather.Hourly ->
+            val hourlyDateTime = (hourly.dt * 1000L).asDateTime()
+            Text(text = hourlyDateTime.time)
+            Card(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(DIMEN_SMALL),
+                elevation = DIMEN_SMALL,
+                shape = Shapes.large
+            ) {
                 Column(
                     modifier = Modifier.padding(DIMEN_SMALL),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val hourlyDateTime = (hourly.dt * 1000L).asDateTime()
-                    Text(text = hourlyDateTime.time)
-                    Card(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(DIMEN_SMALL),
-                        elevation = DIMEN_SMALL,
-                        shape = Shapes.large
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(DIMEN_SMALL),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            WeatherIconElement(
-                                iconCode = hourly.weather[0].icon,
-                                iconDescription = hourly.weather[0].description,
-                                iconSize = DIMEN_MEDIUM
-                            )
-                            Spacer(modifier = Modifier.height(DIMEN_SMALL))
-                            Text(text = "${hourly.temp}$degreesName")
-                            Text(
-                                text = "${hourly.wind_speed} ${stringResource(R.string.meters_per_second)} ${
-                                with(hourly.wind_deg) {
-                                    val directions = listOf(
-                                        stringResource(id = R.string.wind_north),
-                                        stringResource(id = R.string.wind_northeast),
-                                        stringResource(id = R.string.wind_east),
-                                        stringResource(id = R.string.wind_southeast),
-                                        stringResource(id = R.string.wind_south),
-                                        stringResource(id = R.string.wind_southwest),
-                                        stringResource(id = R.string.wind_west),
-                                        stringResource(id = R.string.wind_northwest)
-                                    )
-                                    var count = (this * 8 / 360f).roundToInt()
-                                    count = (count + 8) % 8
-                                    directions[count]
-                                }
-                                }"
-                            )
-                        }
-                    }
+                    WeatherIconElement(
+                        iconCode = hourly.weather[0].icon,
+                        iconDescription = hourly.weather[0].description,
+                        iconSize = DIMEN_MEDIUM
+                    )
+                    Spacer(modifier = Modifier.height(DIMEN_SMALL))
+                    Text(text = "${hourly.temp}$degreesName")
+                    Text(
+                        text = "${hourly.wind_speed} ${stringResource(R.string.meters_per_second)} ${
+                            with(hourly.wind_deg) {
+                                val directions = listOf(
+                                    stringResource(id = R.string.wind_north),
+                                    stringResource(id = R.string.wind_northeast),
+                                    stringResource(id = R.string.wind_east),
+                                    stringResource(id = R.string.wind_southeast),
+                                    stringResource(id = R.string.wind_south),
+                                    stringResource(id = R.string.wind_southwest),
+                                    stringResource(id = R.string.wind_west),
+                                    stringResource(id = R.string.wind_northwest)
+                                )
+                                var count = (this * 8 / 360f).roundToInt()
+                                count = (count + 8) % 8
+                                directions[count]
+                            }
+                        }"
+                    )
+                }
+            }
+        }
+    }
+}
+
+fun LazyListScope.dailyItems(
+    dailyList: List<Weather.Daily>,
+    degreesName: String
+) {
+    itemsIndexed(dailyList) { index: Int, daily: Weather.Daily ->
+        Column(
+            modifier = Modifier.padding(DIMEN_SMALL),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val dailyDateTime = (daily.dt * 1000L).asDateTime()
+            val time = when (index) {
+                0 -> stringResource(R.string.today)
+                1 -> stringResource(R.string.tomorrow)
+                else -> dailyDateTime.dayOfWeek
+            }
+            Text(text = time)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(DIMEN_SMALL),
+                elevation = DIMEN_SMALL,
+                shape = Shapes.large
+            ) {
+                Column(
+                    modifier = Modifier.padding(DIMEN_SMALL),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    WeatherIconElement(
+                        iconCode = daily.weather[0].icon,
+                        iconDescription = daily.weather[0].description,
+                        iconSize = DIMEN_MEDIUM
+                    )
+                    Spacer(modifier = Modifier.height(DIMEN_SMALL))
+                    Text(text = "${daily.temp.max}$degreesName")
+                    Text(text = "${daily.temp.min}$degreesName")
+                    Text(
+                        text = "${
+                            daily.wind_speed
+                        } ${
+                            stringResource(id = R.string.meters_per_second)
+                        } ${
+                            with(daily.wind_deg) {
+                                val directions = listOf(
+                                    stringResource(id = R.string.wind_north),
+                                    stringResource(id = R.string.wind_northeast),
+                                    stringResource(id = R.string.wind_east),
+                                    stringResource(id = R.string.wind_southeast),
+                                    stringResource(id = R.string.wind_south),
+                                    stringResource(id = R.string.wind_southwest),
+                                    stringResource(id = R.string.wind_west),
+                                    stringResource(id = R.string.wind_northwest)
+                                )
+                                var count = (this * 8 / 360f).roundToInt()
+                                count = (count + 8) % 8
+                                directions[count]
+                            }
+                        }"
+                    )
                 }
             }
         }
@@ -236,8 +321,6 @@ fun WeatherScreenContent(
 fun WeatherScreenPreview() {
     WeatherScreenContent(
         city = City("Preview city"),
-        weather = Weather(),
-        degreesName = stringResource(R.string.degrees_centigrade),
-        bottomPadding = 10.dp
+        weather = Weather()
     )
 }

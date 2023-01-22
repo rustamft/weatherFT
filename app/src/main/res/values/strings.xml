@@ -12,6 +12,7 @@
     <string name="city">City</string>
     <string name="dark_theme">Dark theme</string>
     <string name="degrees_centigrade">°C</string>
+    <string name="daily_forecast">Daily forecast</string>
     <string name="feels_like">Feels like</string>
     <string name="find_city">Find the city</string>
     <string name="language">Language</string>
@@ -25,8 +26,6 @@
     <string name="something_went_wrong">&#128565;</string>
     <string name="sunrise">🌅</string>
     <string name="sunset">🌃</string>
-    <string name="temperature_max">️⬆️</string>
-    <string name="temperature_min">️⬇️</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="updated_at">&#128260;</string>

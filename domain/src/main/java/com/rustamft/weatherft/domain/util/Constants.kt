@@ -7,7 +7,6 @@ const val API_KEYS_LINK = "https://home.openweathermap.org/api_keys"
 
 const val ROUTE_LOGIN = "login_screen"
 const val ROUTE_WEATHER = "weather_screen"
-const val ROUTE_FORECAST = "forecast_screen"
 
 const val EXCLUDE_WEATHER = "minutely,alerts"
 const val UNITS_METRIC = "metric"
