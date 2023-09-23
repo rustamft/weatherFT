@@ -39,13 +39,14 @@ class MainActivity : ComponentActivity() {
                             shrinkForRoutes = listOf(ROUTE_LOGIN)
                         )
                     }
-                ) {
+                ) { paddingValues ->
                     DestinationsNavHost(
                         navGraph = NavGraphs.root,
                         navController = navController,
                         dependenciesContainerBuilder = {
                             dependency(scaffoldState)
                             dependency(appPreferencesState)
+                            dependency(paddingValues)
                         }
                     )
                 }

@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp") version "${Constants.KOTLIN_VERSION}-1.0.6"
+    id("com.google.devtools.ksp") version "${Constants.KOTLIN_VERSION}-1.0.13"
     id("dagger.hilt.android.plugin")
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
@@ -20,21 +20,18 @@ kotlin {
 }
 
 android {
-    compileSdk = 33
-
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.rustamft.weatherft"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
-        versionName = "0.8.8"
-
+        versionName = "0.8.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -45,11 +42,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         compose = true
@@ -57,7 +54,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Constants.COMPOSE_COMPILER_VERSION
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -66,27 +63,25 @@ android {
 }
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     // Compose
     implementation("androidx.compose.ui:ui:${Constants.COMPOSE_VERSION}")
     implementation("androidx.compose.material:material:${Constants.COMPOSE_VERSION}")
     implementation("androidx.compose.ui:ui-tooling-preview:${Constants.COMPOSE_VERSION}")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Constants.COMPOSE_VERSION}")
     debugImplementation("androidx.compose.ui:ui-tooling:${Constants.COMPOSE_VERSION}")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     // Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.25.1")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
     // Compose destinations
-    val composeDestinationsVersion = "1.7.15-beta"
+    val composeDestinationsVersion = "1.9.53"
     implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
     // Retrofit
@@ -94,14 +89,15 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.43.2")
-    kapt("com.google.dagger:hilt-compiler:2.43.2")
+    val hiltVersion = "2.48"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
     // Hilt navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     // Coroutine test
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     // MockK
-    testImplementation("io.mockk:mockk:1.12.5")
+    testImplementation("io.mockk:mockk:1.13.8")
     // LeakCanary
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 }
