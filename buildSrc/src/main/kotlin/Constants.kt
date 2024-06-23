@@ -1,5 +1,3 @@
-import org.gradle.api.JavaVersion
-
 object Constants {
     const val KOTLIN_VERSION = "1.9.10"
     const val HILT_VERSION = "2.48"

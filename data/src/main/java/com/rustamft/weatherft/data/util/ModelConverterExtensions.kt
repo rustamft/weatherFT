@@ -1,4 +1,4 @@
-package com.rustamft.weatherft.data.repository
+package com.rustamft.weatherft.data.util
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

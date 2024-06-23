@@ -1,6 +1,7 @@
 package com.rustamft.weatherft.data.repository
 
 import com.rustamft.weatherft.data.storage.AppPreferencesStorage
+import com.rustamft.weatherft.data.util.convert
 import com.rustamft.weatherft.domain.model.AppPreferences
 import com.rustamft.weatherft.domain.repository.AppPreferencesRepository
 import kotlinx.coroutines.CoroutineDispatcher
